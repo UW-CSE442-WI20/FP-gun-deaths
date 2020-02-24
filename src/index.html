@@ -2,10 +2,33 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Title</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <title>FP Gun Deaths</title>
   </head>
   <body>
-    <h1>My Webpage</h1>
+    <h1>The Effects of Guns in America</h1>
     <script src="./index.js"></script>
+    <body>
+      <h2>Breakdown of Gun Deaths in the U.S. by Race and Age from 2012 to 2014</h2>
+      <div id="specs">
+        <div id="intent">
+          <h3>Intent:</h3>
+            <select id="intent-select">
+              <option value=1 selected>All Deaths</option>
+              <option value=2>Homicide</option>
+              <option value=3>Suicide</option>
+            </select>
+        </div>
+        <div id="age">
+          <h3>Age:</h3>
+          <div class="col-sm-2"><p id="value-age"></p></div>
+          <div class="col-sm"><div id="slider-age"></div></div>
+          <!-- <div class="row align-items-center"> -->
+          <!-- </div> -->
+        </div>
+      </div>
+      <script src="https://unpkg.com/d3-simple-slider"></script>
+    <script src="./bubbleGraph.js"></script>
   </body>
 </html>
