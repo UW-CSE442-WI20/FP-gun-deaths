@@ -35,6 +35,7 @@ function pieChartCreateAndUpdate() {
         })
         .attr("d", arc);
 
+    // creates the lengend for the pie chart
     var legendP = svg.selectAll(".legend")
         .data(pie(current))
         .enter().append("g")
@@ -56,7 +57,7 @@ function pieChartCreateAndUpdate() {
         })
         .style("font-size", 12)
         .attr("y", 10)
-        .attr("x", 11)
+        .attr("x", 11);
 }
 
 // grabs the data about Male v Female, filtered on intent
@@ -82,7 +83,7 @@ d3.csv(csvMvF, function(d) {
         d.Deaths = +d.Deaths;
         return d;
 }).then(function(d) {
-    var $intentSelector = document.getElementById("intent-pie-select");
+    var $intentSelector = document.getElementById("intent-select");
     var intent = $intentSelector.value;
     var intentData = getFilteredData(d, $intentSelector.value);
 
