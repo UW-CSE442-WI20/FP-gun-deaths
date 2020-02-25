@@ -1,21 +1,19 @@
-	Place	Intent	Deaths
-1	Home	Suicide	45415
-2	Other specified	Suicide	8031
-3	Street	Suicide	2181
-4	Other unspecified	Suicide	4774
-5	Trade/service area	Suicide	1723
-6	School/insituition	Suicide	295
-7	Farm	Suicide	378
-8	Industrial/construction	Suicide	155
-9	Residential instituition	Suicide	125
-10	Sports	Suicide	98
-11	Home	Homicide	13613
-12	Other specified	Homicide	5429
-13	Street	Homicide	8867
-14	Other unspecified	Homicide	3604
-15	Trade/service area	Homicide	1663
-16	School/insituition	Homicide	361
-17	Farm	Homicide	76
-18	Industrial/construction	Homicide	85
-19	Residential instituition	Homicide	73
-20	Sports	Homicide	22
+Place,Intent,Deaths
+Home,Suicide,45415
+Other,Suicide,12805
+Street,Suicide,2181
+Trade/service area,Suicide,1723
+School/insituition,Suicide,295
+"Farm	Suicide	378",Suicide,378
+Industrial/construction,Suicide,155
+Residential instituition,Suicide,125
+Sports,Suicide,98
+Home,Homicide,13613
+Other,Homicide,10416
+Street,Homicide,8867
+Trade/service area,Homicide,1663
+School/insituition,Homicide,361
+"Farm	Suicide	378",Homicide,76
+Industrial/construction,Homicide,85
+Residential instituition,Homicide,73
+Sports,Homicide,22
