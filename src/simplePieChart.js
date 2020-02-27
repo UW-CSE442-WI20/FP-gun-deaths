@@ -1,25 +1,36 @@
-var genders = ["M", "F"]
+var genders = ["Male", "Female"]
 var intents = ["Homicide", "Suicide"]
 
 var deaths = [54486, 8689, 29803, 5373];  // MS, FS, MH, FH
-var current = []
+var current = [];
+var radius = Math.min(300, 200) / 2;
+var width = 300;
+var height = 200;
 
-var svg = d3.select("body").append("svg"),
-			width = svg.attr("width", 300),
-			height = svg.attr("height", 200),
-			radius = Math.min(width, height) / 2,
-			g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+var svg = d3.select("body").append("svg")
+			.attr("width", width)
+            .attr("height", height);
+            
+g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-var color = d3.scaleOrdinal(['#4daf4a','#377eb8']);
+// Generate the arcs
+var arc = d3.arc()
+                .innerRadius(0)
+                .outerRadius(radius);
+
+var color = d3.scaleOrdinal(['#1F75FE','#FFC0CB']);
 
 // Generate the pie
 var pie = d3.pie();
 
-function pieChartCreateAndUpdate() {
-    // Generate the arcs
-    var arc = d3.arc()
-                .innerRadius(0)
-                .outerRadius(radius);
+function pieChartUpdate() {
+    g.selectAll("arc")
+        .data(pie(current))
+        .selectAll("path")
+        .attr("d", arc);
+}
+
+function pieChartCreate() {
 
     //Generate groups
     var arcs = g.selectAll("arc")
@@ -40,20 +51,20 @@ function pieChartCreateAndUpdate() {
         .data(pie(current))
         .enter().append("g")
         .attr("transform", function(d, i){
-            return "translate(" + (width-110) + "," + (i*15 +20) + ")";
+            return "translate(" + (width-50) + "," + (i*15 +20) + ")";
         })
         .attr("class", "legend");
 
     legendP.append("rect")
         .attr("width", 10)
-        .attr("hegiht", 10)
+        .attr("height", 10)
         .attr("fill", function(d, i){
             return color(i);
         });
 
     legendP.append("text")
-        .text(function(d){
-            return d;
+        .text(function(d, i){
+            return genders[i];
         })
         .style("font-size", 12)
         .attr("y", 10)
@@ -61,7 +72,7 @@ function pieChartCreateAndUpdate() {
 }
 
 // grabs the data about Male v Female, filtered on intent
-function getFilteredDataForPieChart(data, intent) {
+function getFilteredData(data, intent) {
     if (intent == 1) { // double equals allows interpolation
         // both homicide and suicide
         current = [deaths[0]+deaths[2], deaths[1]+deaths[3]];
@@ -85,15 +96,16 @@ d3.csv(csvMvF, function(d) {
 }).then(function(d) {
     var $intentSelector = document.getElementById("intent-select");
     var intent = $intentSelector.value;
-    var intentData = getFilteredData(d, $intentSelector.value);
+    getFilteredData(d, $intentSelector.value);
 
-    pieChartCreateAndUpdate();
+    pieChartCreate();
 
     $intentSelector.onchange = function(e) {
         intent = e.target.value;
-        var intentData = getFilteredData(d, intent);
+        getFilteredData(d, intent);
+        console.log(current);
   
-        pieChartCreateAndUpdate();
+        pieChartUpdate();
   
     };
 })
