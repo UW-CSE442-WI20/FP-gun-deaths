@@ -5,7 +5,7 @@
 diameter = 500;
 pad = 5;
 var ages = ["All", "Under 15", "15 - 34", "35 - 64", "65+"];
-var colors = ["#A6ACAF", "#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"]
+var colors = ["#A6ACAF", "#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"];
 var scale = d3.scaleSqrt();
 var svg = d3.select("body").append("svg");
 svg.attr("width", diameter).attr("height", diameter).attr("border", 0);
