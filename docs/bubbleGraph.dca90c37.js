@@ -281,4 +281,4 @@ function getMaxValue(d) {
   return currMax;
 }
 },{"./bubbleGraphData.csv":"f9Pb"}]},{},["Gtdq"], null)
-//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/bubbleGraph.142332e2.js.map
+//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/bubbleGraph.dca90c37.js.map

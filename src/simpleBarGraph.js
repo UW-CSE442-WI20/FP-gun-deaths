@@ -6,13 +6,13 @@ var padding = 5;
 var svg = d3.select("body").append("svg");
 svg.attr("width", 400).attr("height", size).attr("border", 0);
 
-var x = d3.scalePoint();
+var x = d3.scaleBand();
 var y = d3.scaleLinear();
 
 svg.append("g")
     .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
 
-const csvFile = require("./fullData.csv");
+const csvFile = require("./places.csv");
 d3.csv(csvFile).then(function(d) {
     generateGraph(d);
 })
@@ -21,14 +21,19 @@ d3.csv(csvFile).then(function(d) {
 function generateGraph(d) {
 
     var nestedData = d3.nest()
-        .key(function(d) { return d.place;})
+        .key(function(d) { return d.Place;})
+        .rollup(function(d) {
+            return d3.sum(d, function(d) {
+              return d.Deaths;  
+            })
+          })
         .entries(d);
 
-    nestedData = nestedData.sort(function(d) { console.log(d.values.length); return d3.descending(d.values.length)});
+    nestedData = nestedData.sort(function(d) {return d3.descending(d.value)});
     console.log(nestedData);
 
-    x.domain(nestedData.map(function(d, i) { return d.key;})).range([padding, width + margin.left + padding]);
-    y.domain([0, getMaxValue(nestedData)]).range([height, 10]);
+    x.domain(nestedData.map(function(d, i) { return d.key;})).range([padding, width]);
+    y.domain([0, getMaxValue(nestedData)]).range([height, margin.bottom / 2]);
 
     var xAxis = d3.axisBottom()
         .scale(x);
@@ -36,7 +41,15 @@ function generateGraph(d) {
     var yAxis = d3.axisLeft()
         .scale(y)
         .ticks(10);
-    
+        
+    // title
+    svg.append("text")
+          .attr("transform", "translate(" + margin.left + ", " + 0 + ")")
+          .attr("x", 50)
+          .attr("y", 50)
+          .attr("font-size", "24px")
+          .text("Count of deaths by Location");
+
     // x
     svg.append("g")
         .attr("class", "xAxis")
@@ -46,36 +59,36 @@ function generateGraph(d) {
         .style("text-anchor", "end")
         .attr("dx", "-.8em")
         .attr("dy", "-.55em")
-        .attr("transform", "rotate(-90)" );
+        .attr("transform", "translate(" + margin.left +  ", " + margin.bottom/2 + ")")
+        .attr("transform", "rotate(-30)");
 
     //y
     svg.append("g")
         .attr("class", "yAxis")
         .attr("transform", "translate(" + margin.left + ", " + "0" + ")")
-        .call(yAxis)
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end");
+        .call(yAxis);
 
+
+    // bars
+    y.range([height - 10, margin.bottom / 2]); // augment for drawing
     svg.selectAll("bar")
         .data(nestedData)
         .enter().append("rect")
         .style("fill", function(d) {
-            return "rgb(0, 0, " + Math.round(y(d.values.length)) * 10 + ")";
+            return "rgb(0, 0, " + Math.round(y(d.value)) * 10 + ")";
         })
-        .attr("x", function(d, i) { return (width / nestedData.length) * i + margin.left + padding; })
-        .attr("y", function(d, i) { return y(d.values.length); })
+        .attr("x", function(d, i) {return x(d.key) + margin.left; })
+        .attr("y", function(d, i) { return y(d.value); })
         .transition()
-        .attr("width", width / nestedData.length - padding)
-        .attr("height", function(d, i) { return height - y(d.values.length); });
+        .duration(1000)
+        .attr("width", x.bandwidth() - padding)
+        .attr("height", function(d, i) { return height - y(d.value); });
 }
 
 function getMaxValue(d) {
-    var maxValue = d[0].values.length;
+    var maxValue = d[0].value;
     for (let i = 1; i < d.length; i++) {
-        maxValue = Math.max(maxValue, d[i].values.length);
+        maxValue = Math.max(maxValue, d[i].value);
     }
     return maxValue;
 }
