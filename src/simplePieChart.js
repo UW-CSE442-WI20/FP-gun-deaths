@@ -24,10 +24,19 @@ var color = d3.scaleOrdinal(['#1F75FE','#FFC0CB']);
 var pie = d3.pie();
 
 function pieChartUpdate() {
-    g.selectAll("arc")
+    g.selectAll("arc").remove()
+    var arcs = g.selectAll("arc")
         .data(pie(current))
-        .selectAll("path")
+        .enter()
+        .append("g")
+        .attr("class", "arc")
+        .append("path")
+        .attr("fill", function(d, i) {
+            return color(i);
+        })
         .attr("d", arc);
+
+    
 }
 
 function pieChartCreate() {

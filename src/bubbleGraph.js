@@ -60,6 +60,7 @@ d3.csv(csvFile, function(d) {
             d3.select('p#value-age').text((ages[val]));
             ageGroup = val;
             var ageData = getFilteredData(d, intent, ageGroup);
+            console.log(ageData);
             updateCircles(ageData);
         });
 
