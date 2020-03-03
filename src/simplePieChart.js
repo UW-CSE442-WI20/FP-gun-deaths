@@ -3,6 +3,7 @@ var intents = ["Homicide", "Suicide"]
 
 var deaths = [54486, 8689, 29803, 5373];  // MS, FS, MH, FH
 var current = [];
+var percentage = [];
 var radius = Math.min(300, 200) / 2;
 var width = 300;
 var height = 200;
@@ -78,6 +79,20 @@ function pieChartCreate() {
         .style("font-size", 12)
         .attr("y", 10)
         .attr("x", 11);
+
+    // percentages for pie chart
+    g.append("text")
+    	.attr("transform", function(d) {
+        var _d = arc.centroid(d);
+        _d[0] *= 2.2;	//multiply by a constant factor
+        _d[1] *= 2.2;	//multiply by a constant factor
+        return "translate(" + _d + ")";
+      })
+      .attr("dy", ".50em")
+      .style("text-anchor", "middle")
+      .text(function(d, i) {
+        return percentage[i] + '%';
+      });
 }
 
 // grabs the data about Male v Female, filtered on intent
@@ -85,14 +100,20 @@ function getFilteredData(data, intent) {
     if (intent == 1) { // double equals allows interpolation
         // both homicide and suicide
         current = [deaths[0]+deaths[2], deaths[1]+deaths[3]];
+        var total_deaths = deaths[0]+deaths[2] + deaths[1]+deaths[3]
+        percentage = [current[0]/total_deaths, current[1]/total_deaths]
         return data;
     } else if (intent == 2) {
         // homicide
         current = [deaths[2], deaths[3]];
+        var total_deaths = deaths[2] + deaths[3]
+        percentage = [current[0]/total_deaths, current[1]/total_deaths]
         return data.filter(function(d) { return d.Intent === "Homicide"});
     } else {  // intent == 3
         // suicide
         current = [deaths[0], deaths[1]];
+        var total_deaths = deaths[0] + deaths[1]
+        percentage = [current[0]/total_deaths, current[1]/total_deaths]
         return data.filter(function(d) { return d.Intent === "Suicide"});
     }
 }
