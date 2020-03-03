@@ -153,7 +153,6 @@ function generateGraph(d) {
   nestedData = nestedData.sort(function (d) {
     return d3.descending(d.value);
   });
-  console.log(nestedData);
   x.domain(nestedData.map(function (d, i) {
     return d.key;
   })).range([padding, width]);
@@ -190,4 +189,4 @@ function getMaxValue(d) {
   return maxValue;
 }
 },{"./places.csv":"hQIG"}]},{},["ZSN4"], null)
-//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/simpleBarGraph.330a89a9.js.map
+//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/simpleBarGraph.9995310e.js.map

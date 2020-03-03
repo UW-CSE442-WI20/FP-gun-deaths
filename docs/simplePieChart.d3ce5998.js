@@ -117,75 +117,101 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"N8Gz":[function(require,module,exports) {
-module.exports = "https://uw-cse442-wi20.github.io/FP-gun-deaths/fullData.a5aea34f.csv";
-},{}],"U9Po":[function(require,module,exports) {
-// set the dimensions and margins of the graph
-var margin = {
-  top: 20,
-  right: 20,
-  bottom: 30,
-  left: 50
-},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom; // set the ranges
+})({"BE9J":[function(require,module,exports) {
+module.exports = "https://uw-cse442-wi20.github.io/FP-gun-deaths/MvF.48a8c96a.csv";
+},{}],"lD15":[function(require,module,exports) {
+var genders = ["Male", "Female"];
+var intents = ["Homicide", "Suicide"];
+var deaths = [54486, 8689, 29803, 5373]; // MS, FS, MH, FH
 
-var x = d3.scaleLinear().range([0, width]);
-var y = d3.scaleLinear().range([height, 0]); // define the line
+var current = [];
+var radius = Math.min(300, 200) / 2;
+var width = 300;
+var height = 200;
+var svg = d3.select("body").append("svg").attr("width", width).attr("height", height);
+g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")"); // Generate the arcs
 
-var valueline = d3.line().x(function (d) {
-  return x(d.age);
-}).y(function (d) {
-  return y(d.length);
-}); // append the svg obgect to the body of the page
-// appends a 'group' element to 'svg'
-// moves the 'group' element to the top left margin
+var arc = d3.arc().innerRadius(0).outerRadius(radius);
+var color = d3.scaleOrdinal(['#1F75FE', '#FFC0CB']); // Generate the pie
 
-var svg = d3.select("body").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")"); // Get the data
+var pie = d3.pie();
 
-var csvFile = require("./fullData.csv");
-
-d3.csv(csvFile, function (d) {
-  // format the data
-  d.age = +d.age;
-  return d;
-}).then(function (data) {
-  var dataByRaceAndAge = d3.nest().key(function (d) {
-    return d.race;
-  }).key(function (d) {
-    return d.age;
-  }).rollup(function (v) {
-    return v.length;
-  }).entries(data); // dataByRaceAndAge = dataByRaceAndAge.sort(function(d) { return d3.ascending(d.values.key)});
-
-  console.log(dataByRaceAndAge); // Scale the range of the data
-
-  x.domain([0, d3.max(data, function (d) {
-    return d.age;
-  })]);
-  y.domain([0, getMaxValue(dataByRaceAndAge)]).range([height, 10]); // // Add the valueline path.
-  // svg.append("path")
-  //     .data([groupedData])
-  //     .attr("class", "line")
-  //     .attr("d", valueline);
-  //
-  // Add the X Axis
-
-  svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisBottom(x)); // Add the Y Axis
-
-  svg.append("g").call(d3.axisLeft(y));
-});
-
-function getMaxValue(d) {
-  var maxValue = d[0].values[0].value;
-
-  for (var i = 0; i < d.length; i++) {
-    for (var j = 0; j < d[i].length; j++) {
-      maxValue = Math.max(maxValue, d[i].values[j].value);
-    }
-  }
-
-  return maxValue;
+function pieChartUpdate() {
+  g.selectAll("arc").remove();
+  var arcs = g.selectAll("arc").data(pie(current)).enter().append("g").attr("class", "arc").append("path").attr("fill", function (d, i) {
+    return color(i);
+  }).attr("d", arc);
 }
-},{"./fullData.csv":"N8Gz"}]},{},["U9Po"], null)
-//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/lineGraph.9206d848.js.map
+
+function pieChartCreate() {
+  //Generate groups
+  var arcs = g.selectAll("arc").data(pie(current)).enter().append("g").attr("class", "arc"); //Draw arc paths
+
+  arcs.append("path").attr("fill", function (d, i) {
+    return color(i);
+  }).attr("d", arc); // creates the lengend for the pie chart
+
+  var legendP = svg.selectAll(".legend").data(pie(current)).enter().append("g").attr("transform", function (d, i) {
+    return "translate(" + (width - 50) + "," + (i * 15 + 20) + ")";
+  }).attr("class", "legend");
+  legendP.append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d, i) {
+    return color(i);
+  });
+  legendP.append("text").text(function (d, i) {
+    return genders[i];
+  }).style("font-size", 12).attr("y", 10).attr("x", 11);
+} // grabs the data about Male v Female, filtered on intent
+
+
+function getFilteredData(data, intent) {
+  if (intent == 1) {
+    // double equals allows interpolation
+    // both homicide and suicide
+    current = [deaths[0] + deaths[2], deaths[1] + deaths[3]];
+    return data;
+  } else if (intent == 2) {
+    // homicide
+    current = [deaths[2], deaths[3]];
+    return data.filter(function (d) {
+      return d.Intent === "Homicide";
+    });
+  } else {
+    // intent == 3
+    // suicide
+    current = [deaths[0], deaths[1]];
+    return data.filter(function (d) {
+      return d.Intent === "Suicide";
+    });
+  }
+} // read in CSV data
+
+
+var csvMvF = require("./MvF.csv");
+
+d3.csv(csvMvF, function (d) {
+  d.Deaths = +d.Deaths;
+  return d;
+}).then(function (d) {
+  var $intentSelector = document.getElementById("intent-select");
+  var intent = $intentSelector.value;
+  getFilteredData(d, $intentSelector.value);
+  pieChartCreate();
+
+  $intentSelector.onchange = function (e) {
+    intent = e.target.value;
+    getFilteredData(d, intent);
+    console.log(current);
+    pieChartUpdate();
+  };
+}); // html for intent selecter for piechart
+//
+//<div id="intent-pie">
+//    <h3>Intent (Pie Chart):</h3>
+//      <select id="intent-pie-select">
+//        <option value=1 selected>All Deaths</option>
+//        <option value=2>Homicide</option>
+//        <option value=3>Suicide</option>
+//      </select>
+//</div>
+},{"./MvF.csv":"BE9J"}]},{},["lD15"], null)
+//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/simplePieChart.d3ce5998.js.map
