@@ -1,18 +1,20 @@
 var genders = ["Male", "Female"]
 var intents = ["Homicide", "Suicide"]
+var padding = 50;
 
 var deaths = [54486, 8689, 29803, 5373];  // MS, FS, MH, FH
 var current = [];
 var percentage = [];
-var radius = Math.min(300, 200) / 2;
 var width = 300;
 var height = 200;
+var radius = Math.min(width, height) / 2;
+
 
 var svg = d3.select("body").append("svg")
-			.attr("width", width)
-            .attr("height", height);
+			.attr("width", width + padding)
+            .attr("height", height + padding);
             
-g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+g = svg.append("g").attr("transform", "translate(" + (width+padding) / 2 + "," + (height+padding) / 2 + ")");
 
 // Generate the arcs
 var arc = d3.arc()
@@ -25,17 +27,29 @@ var color = d3.scaleOrdinal(['#1F75FE','#FFC0CB']);
 var pie = d3.pie();
 
 function pieChartUpdate() {
-    g.selectAll("arc").remove()
-    var arcs = g.selectAll("arc")
+    svg.selectAll("path")
         .data(pie(current))
-        .enter()
-        .append("g")
-        .attr("class", "arc")
-        .append("path")
-        .attr("fill", function(d, i) {
-            return color(i);
-        })
+        .transition()
+        .duration(2000)
         .attr("d", arc);
+    
+    // svg.selectAll("arc").selectAll("percentage").remove();
+    console.log(svg.selectAll("text.percentage"));
+    svg.selectAll("text.percentage")
+        .data(pie(current))
+        .transition()
+    	.attr("transform", function(d, i) {
+        var _d = arc.centroid(d);
+        console.log(_d);
+        _d[0] *= 2.2;	//multiply by a constant factor
+        _d[1] *= 2.2;	//multiply by a constant factor
+        return "translate(" + _d + ")";
+      })
+      .attr("dy", ".50em")
+      .style("text-anchor", "middle")
+      .text(function(d, i) {
+        return percentage[i].toFixed(2) + '%';
+      });
 
     
 }
@@ -81,9 +95,14 @@ function pieChartCreate() {
         .attr("x", 11);
 
     // percentages for pie chart
-    g.append("text")
-    	.attr("transform", function(d) {
+    g.selectAll("percentage")
+        .data(pie(current))
+        .enter()
+        .append("text")
+        .attr("class", "percentage")
+    	.attr("transform", function(d, i) {
         var _d = arc.centroid(d);
+        console.log(_d);
         _d[0] *= 2.2;	//multiply by a constant factor
         _d[1] *= 2.2;	//multiply by a constant factor
         return "translate(" + _d + ")";
@@ -91,7 +110,7 @@ function pieChartCreate() {
       .attr("dy", ".50em")
       .style("text-anchor", "middle")
       .text(function(d, i) {
-        return percentage[i] + '%';
+        return percentage[i].toFixed(2) + '%';
       });
 }
 
