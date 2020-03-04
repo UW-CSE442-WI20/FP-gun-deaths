@@ -11,22 +11,22 @@ var races = ["Asian/Pacific Islander", "Black", "Hispanic", "Native American", "
 var colors = ["#A6ACAF", "#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"];
 
 // define the line
-function valueline (Race) {
+function valueline(intent) {
   return d3.line()
-      .x(function(d) { return x(d.Age); })
-      .y(function(d) { if (Race == "Asian/Pacific Islander") {
-                          return y(d.AsianPacificIslander);
-                        } else if (Race == "Black") {
-                          return y(d.Black);
-                        } else if (Race == "Hispanic") {
-                          return y(d.Hispanic);
-                        } else if (Race == "Native American") {
-                          return y(d.NativeAmerican);
+        .x(function(d) { return x(d.Age); })
+        .y(function(d) { if (intent == 1) {
+                          return y(d.HomicideCnt + d.SuicideCnt);
+                        } else if (intent == 2) {
+                          return y(d.HomicideCnt);
                         } else {
-                          return y(d.White);
-                        }
-                      });
+                          return y(d.SuicideCnt);
+                        } });
 }
+
+function getFilteredData(data, race) {
+  return data.filter(function(d) { return d.Race === race });
+}
+
 
 // append the svg obgect to the body of the page
 // appends a 'group' element to 'svg'
@@ -43,11 +43,8 @@ const csvFile = require("./lineData.csv");
 d3.csv(csvFile, function(d) {
     // format the data
     d.Age = +d.Age;
-    d.AsianPacificIslander = +d.AsianPacificIslander;
-    d.Black = +d.Black;
-    d.Hispanic = +d.Hispanic;
-    d.NativeAmerican = +d.NativeAmerican;
-    d.White = +d.White;
+    d.HomicideCnt = +d.HomicideCnt;
+    d.SuicideCnt = +d.SuicideCnt;
     return d;
   }).then(function(data){
 
@@ -59,11 +56,11 @@ d3.csv(csvFile, function(d) {
     // Add the valueline path.
     for (let i = 0; i < races.length; i++) {
       svg.append("path")
-          .data([data])
+          .data(getFilteredData(data, races[i]))
           .attr("fill", "none")
           .attr("stroke", colors[i])
           .attr("stroke-width", "2px")
-          .attr("d", valueline(races[i]));
+          .attr("d", valueline(2));
     }
 
     // Add the X Axis
