@@ -117,8 +117,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"lineData.csv":[function(require,module,exports) {
-module.exports = "/lineData.6de59011.csv";
+})({"lineGraphData.csv":[function(require,module,exports) {
+module.exports = "/lineGraphData.5a6dca58.csv";
 },{}],"lineGraph.js":[function(require,module,exports) {
 // set the dimensions and margins of the graph
 var margin = {
@@ -135,21 +135,23 @@ var y = d3.scaleLinear().range([height, 0]);
 var races = ["Asian/Pacific Islander", "Black", "Hispanic", "Native American", "White"];
 var colors = ["#A6ACAF", "#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"]; // define the line
 
-function valueline(Race) {
+function valueline(intent) {
   return d3.line().x(function (d) {
     return x(d.Age);
   }).y(function (d) {
-    if (Race == "Asian/Pacific Islander") {
-      return y(d.AsianPacificIslander);
-    } else if (Race == "Black") {
-      return y(d.Black);
-    } else if (Race == "Hispanic") {
-      return y(d.Hispanic);
-    } else if (Race == "Native American") {
-      return y(d.NativeAmerican);
+    if (intent == 1) {
+      return y(d.HomicideCnt + d.SuicideCnt);
+    } else if (intent == 2) {
+      return y(d.HomicideCnt);
     } else {
-      return y(d.White);
+      return y(d.SuicideCnt);
     }
+  });
+}
+
+function getFilteredData(data, race) {
+  return data.filter(function (d) {
+    return d.Race === race;
   });
 } // append the svg obgect to the body of the page
 // appends a 'group' element to 'svg'
@@ -158,16 +160,13 @@ function valueline(Race) {
 
 var svg = d3.select("body").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")"); // Get the data
 
-var csvFile = require("./lineData.csv");
+var csvFile = require("./lineGraphData.csv");
 
 d3.csv(csvFile, function (d) {
   // format the data
   d.Age = +d.Age;
-  d.AsianPacificIslander = +d.AsianPacificIslander;
-  d.Black = +d.Black;
-  d.Hispanic = +d.Hispanic;
-  d.NativeAmerican = +d.NativeAmerican;
-  d.White = +d.White;
+  d.HomicideCnt = +d.HomicideCnt;
+  d.SuicideCnt = +d.SuicideCnt;
   return d;
 }).then(function (data) {
   // Scale the range of the data
@@ -178,7 +177,7 @@ d3.csv(csvFile, function (d) {
   // Add the valueline path.
 
   for (var i = 0; i < races.length; i++) {
-    svg.append("path").data([data]).attr("fill", "none").attr("stroke", colors[i]).attr("stroke-width", "2px").attr("d", valueline(races[i]));
+    svg.append("path").data([getFilteredData(data, races[i])]).attr("fill", "none").attr("stroke", colors[i]).attr("stroke-width", "2px").attr("d", valueline(1));
   } // Add the X Axis
 
 
@@ -196,7 +195,7 @@ function getMaxValue(d) {
 
   return maxValue;
 }
-},{"./lineData.csv":"lineData.csv"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./lineGraphData.csv":"lineGraphData.csv"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -224,7 +223,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50470" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55878" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,0 +1,501 @@
+Age,Race,HomicideCnt,SuicideCnt
+0,Asian/Pacific Islander,1,0
+0,White,10,0
+0,Native American,0,0
+0,Hispanic,4,0
+0,Black,7,0
+1,Asian/Pacific Islander,2,0
+1,White,9,0
+1,Native American,0,0
+1,Hispanic,7,0
+1,Black,16,0
+2,Asian/Pacific Islander,0,0
+2,White,12,0
+2,Native American,1,0
+2,Hispanic,5,0
+2,Black,11,0
+3,Asian/Pacific Islander,0,0
+3,White,13,0
+3,Native American,2,0
+3,Hispanic,7,0
+3,Black,14,0
+4,Asian/Pacific Islander,0,0
+4,White,12,0
+4,Native American,0,0
+4,Hispanic,11,0
+4,Black,9,0
+5,Asian/Pacific Islander,0,0
+5,White,14,0
+5,Native American,0,0
+5,Hispanic,10,0
+5,Black,10,0
+6,Asian/Pacific Islander,1,0
+6,White,24,0
+6,Native American,0,0
+6,Hispanic,6,0
+6,Black,11,0
+7,Asian/Pacific Islander,2,0
+7,White,19,0
+7,Native American,0,0
+7,Hispanic,4,0
+7,Black,13,0
+8,Asian/Pacific Islander,0,0
+8,White,13,0
+8,Native American,1,0
+8,Hispanic,4,0
+8,Black,5,0
+9,Asian/Pacific Islander,2,0
+9,White,19,2
+9,Native American,2,0
+9,Hispanic,5,0
+9,Black,8,0
+10,Asian/Pacific Islander,2,0
+10,White,23,3
+10,Native American,0,0
+10,Hispanic,4,0
+10,Black,8,0
+11,Asian/Pacific Islander,0,1
+11,White,18,10
+11,Native American,0,0
+11,Hispanic,8,1
+11,Black,13,2
+12,Asian/Pacific Islander,0,0
+12,White,16,44
+12,Native American,0,0
+12,Hispanic,11,7
+12,Black,23,3
+13,Asian/Pacific Islander,1,3
+13,White,32,106
+13,Native American,1,1
+13,Hispanic,18,9
+13,Black,33,8
+14,Asian/Pacific Islander,0,4
+14,White,29,185
+14,Native American,2,0
+14,Hispanic,30,20
+14,Black,64,8
+15,Asian/Pacific Islander,2,4
+15,White,33,222
+15,Native American,3,6
+15,Hispanic,62,27
+15,Black,161,17
+16,Asian/Pacific Islander,3,7
+16,White,54,294
+16,Native American,4,7
+16,Hispanic,115,27
+16,Black,298,20
+17,Asian/Pacific Islander,6,4
+17,White,77,351
+17,Native American,5,8
+17,Hispanic,141,33
+17,Black,481,36
+18,Asian/Pacific Islander,10,14
+18,White,125,424
+18,Native American,8,15
+18,Hispanic,252,50
+18,Black,743,53
+19,Asian/Pacific Islander,18,16
+19,White,145,478
+19,Native American,11,16
+19,Hispanic,260,75
+19,Black,930,46
+20,Asian/Pacific Islander,19,17
+20,White,183,504
+20,Native American,7,18
+20,Hispanic,268,69
+20,Black,990,79
+21,Asian/Pacific Islander,20,13
+21,White,224,639
+21,Native American,12,21
+21,Hispanic,267,80
+21,Black,"1,047",111
+22,Asian/Pacific Islander,18,20
+22,White,221,704
+22,Native American,12,19
+22,Hispanic,306,142
+22,Black,"1,071",127
+23,Asian/Pacific Islander,18,17
+23,White,204,733
+23,Native American,10,15
+23,Hispanic,255,91
+23,Black,972,93
+24,Asian/Pacific Islander,16,24
+24,White,227,686
+24,Native American,17,14
+24,Hispanic,222,96
+24,Black,960,116
+25,Asian/Pacific Islander,17,25
+25,White,199,665
+25,Native American,13,8
+25,Hispanic,217,86
+25,Black,854,99
+26,Asian/Pacific Islander,21,17
+26,White,236,718
+26,Native American,7,15
+26,Hispanic,204,91
+26,Black,777,94
+27,Asian/Pacific Islander,16,21
+27,White,186,673
+27,Native American,12,19
+27,Hispanic,215,75
+27,Black,707,105
+28,Asian/Pacific Islander,17,14
+28,White,210,624
+28,Native American,16,15
+28,Hispanic,169,84
+28,Black,707,89
+29,Asian/Pacific Islander,19,22
+29,White,205,667
+29,Native American,11,5
+29,Hispanic,171,76
+29,Black,649,76
+30,Asian/Pacific Islander,8,16
+30,White,225,656
+30,Native American,8,14
+30,Hispanic,148,70
+30,Black,604,76
+31,Asian/Pacific Islander,11,18
+31,White,197,684
+31,Native American,7,19
+31,Hispanic,150,65
+31,Black,563,84
+32,Asian/Pacific Islander,14,13
+32,White,188,656
+32,Native American,15,11
+32,Hispanic,178,78
+32,Black,569,66
+33,Asian/Pacific Islander,13,23
+33,White,189,623
+33,Native American,13,7
+33,Hispanic,145,58
+33,Black,524,71
+34,Asian/Pacific Islander,9,13
+34,White,211,633
+34,Native American,8,11
+34,Hispanic,144,65
+34,Black,495,73
+35,Asian/Pacific Islander,9,13
+35,White,175,646
+35,Native American,9,11
+35,Hispanic,136,72
+35,Black,453,68
+36,Asian/Pacific Islander,13,14
+36,White,168,604
+36,Native American,5,5
+36,Hispanic,119,68
+36,Black,413,74
+37,Asian/Pacific Islander,12,14
+37,White,174,674
+37,Native American,8,11
+37,Hispanic,102,57
+37,Black,350,65
+38,Asian/Pacific Islander,15,10
+38,White,169,683
+38,Native American,5,11
+38,Hispanic,109,67
+38,Black,327,65
+39,Asian/Pacific Islander,10,18
+39,White,156,672
+39,Native American,5,11
+39,Hispanic,88,61
+39,Black,293,50
+40,Asian/Pacific Islander,14,20
+40,White,174,666
+40,Native American,7,12
+40,Hispanic,96,58
+40,Black,264,71
+41,Asian/Pacific Islander,12,18
+41,White,193,767
+41,Native American,3,6
+41,Hispanic,82,52
+41,Black,250,66
+42,Asian/Pacific Islander,11,11
+42,White,191,803
+42,Native American,8,11
+42,Hispanic,95,55
+42,Black,232,54
+43,Asian/Pacific Islander,10,13
+43,White,203,888
+43,Native American,5,9
+43,Hispanic,60,39
+43,Black,215,60
+44,Asian/Pacific Islander,9,12
+44,White,146,837
+44,Native American,3,10
+44,Hispanic,71,56
+44,Black,206,64
+45,Asian/Pacific Islander,13,13
+45,White,158,844
+45,Native American,8,6
+45,Hispanic,69,35
+45,Black,151,50
+46,Asian/Pacific Islander,6,6
+46,White,166,898
+46,Native American,5,17
+46,Hispanic,52,45
+46,Black,172,41
+47,Asian/Pacific Islander,8,14
+47,White,182,935
+47,Native American,4,11
+47,Hispanic,42,53
+47,Black,202,46
+48,Asian/Pacific Islander,6,15
+48,White,179,"1,066"
+48,Native American,6,10
+48,Hispanic,41,62
+48,Black,154,52
+49,Asian/Pacific Islander,12,12
+49,White,193,"1,096"
+49,Native American,4,7
+49,Hispanic,43,51
+49,Black,162,52
+50,Asian/Pacific Islander,14,10
+50,White,178,"1,130"
+50,Native American,4,9
+50,Hispanic,41,45
+50,Black,150,54
+51,Asian/Pacific Islander,9,13
+51,White,186,"1,219"
+51,Native American,2,6
+51,Hispanic,52,56
+51,Black,126,44
+52,Asian/Pacific Islander,6,11
+52,White,174,"1,224"
+52,Native American,2,10
+52,Hispanic,36,44
+52,Black,118,45
+53,Asian/Pacific Islander,5,8
+53,White,148,"1,272"
+53,Native American,2,10
+53,Hispanic,33,46
+53,Black,107,40
+54,Asian/Pacific Islander,2,12
+54,White,142,"1,283"
+54,Native American,5,7
+54,Hispanic,31,42
+54,Black,81,46
+55,Asian/Pacific Islander,8,10
+55,White,124,"1,226"
+55,Native American,1,10
+55,Hispanic,27,36
+55,Black,72,42
+56,Asian/Pacific Islander,8,12
+56,White,132,"1,250"
+56,Native American,1,6
+56,Hispanic,20,41
+56,Black,89,34
+57,Asian/Pacific Islander,4,8
+57,White,119,"1,144"
+57,Native American,1,9
+57,Hispanic,14,35
+57,Black,76,30
+58,Asian/Pacific Islander,7,8
+58,White,122,"1,191"
+58,Native American,1,5
+58,Hispanic,11,28
+58,Black,63,42
+59,Asian/Pacific Islander,3,10
+59,White,122,"1,113"
+59,Native American,0,7
+59,Hispanic,23,36
+59,Black,56,30
+60,Asian/Pacific Islander,5,11
+60,White,88,"1,112"
+60,Native American,2,7
+60,Hispanic,10,20
+60,Black,40,37
+61,Asian/Pacific Islander,7,9
+61,White,97,"1,050"
+61,Native American,3,3
+61,Hispanic,13,32
+61,Black,35,29
+62,Asian/Pacific Islander,6,6
+62,White,102,849
+62,Native American,1,3
+62,Hispanic,10,32
+62,Black,36,27
+63,Asian/Pacific Islander,3,9
+63,White,67,859
+63,Native American,1,1
+63,Hispanic,11,22
+63,Black,30,18
+64,Asian/Pacific Islander,4,6
+64,White,88,902
+64,Native American,0,4
+64,Hispanic,6,23
+64,Black,32,32
+65,Asian/Pacific Islander,4,11
+65,White,66,851
+65,Native American,0,2
+65,Hispanic,8,23
+65,Black,23,23
+66,Asian/Pacific Islander,3,6
+66,White,79,808
+66,Native American,0,5
+66,Hispanic,3,18
+66,Black,21,20
+67,Asian/Pacific Islander,0,3
+67,White,56,722
+67,Native American,0,2
+67,Hispanic,7,14
+67,Black,26,20
+68,Asian/Pacific Islander,0,3
+68,White,67,708
+68,Native American,0,1
+68,Hispanic,5,17
+68,Black,23,26
+69,Asian/Pacific Islander,0,1
+69,White,42,761
+69,Native American,0,5
+69,Hispanic,7,17
+69,Black,11,15
+70,Asian/Pacific Islander,1,1
+70,White,38,766
+70,Native American,0,5
+70,Hispanic,3,17
+70,Black,12,23
+71,Asian/Pacific Islander,2,3
+71,White,38,683
+71,Native American,1,2
+71,Hispanic,7,12
+71,Black,8,17
+72,Asian/Pacific Islander,2,8
+72,White,34,628
+72,Native American,1,1
+72,Hispanic,4,11
+72,Black,10,19
+73,Asian/Pacific Islander,3,3
+73,White,42,629
+73,Native American,1,3
+73,Hispanic,0,18
+73,Black,12,11
+74,Asian/Pacific Islander,0,3
+74,White,32,582
+74,Native American,0,0
+74,Hispanic,5,15
+74,Black,6,18
+75,Asian/Pacific Islander,1,2
+75,White,29,600
+75,Native American,0,0
+75,Hispanic,2,19
+75,Black,3,12
+76,Asian/Pacific Islander,1,4
+76,White,30,502
+76,Native American,0,1
+76,Hispanic,1,15
+76,Black,8,10
+77,Asian/Pacific Islander,0,2
+77,White,20,513
+77,Native American,0,1
+77,Hispanic,1,9
+77,Black,4,18
+78,Asian/Pacific Islander,1,1
+78,White,37,514
+78,Native American,1,3
+78,Hispanic,4,10
+78,Black,3,17
+79,Asian/Pacific Islander,0,3
+79,White,19,504
+79,Native American,1,3
+79,Hispanic,3,16
+79,Black,6,11
+80,Asian/Pacific Islander,0,1
+80,White,33,472
+80,Native American,1,2
+80,Hispanic,1,11
+80,Black,2,11
+81,Asian/Pacific Islander,0,3
+81,White,18,493
+81,Native American,1,1
+81,Hispanic,0,13
+81,Black,7,14
+82,Asian/Pacific Islander,0,3
+82,White,19,473
+82,Native American,0,1
+82,Hispanic,0,9
+82,Black,1,7
+83,Asian/Pacific Islander,1,1
+83,White,24,493
+83,Native American,0,0
+83,Hispanic,0,8
+83,Black,3,14
+84,Asian/Pacific Islander,1,4
+84,White,23,423
+84,Native American,0,1
+84,Hispanic,0,13
+84,Black,6,12
+85,Asian/Pacific Islander,0,3
+85,White,19,404
+85,Native American,0,1
+85,Hispanic,0,6
+85,Black,0,4
+86,Asian/Pacific Islander,0,1
+86,White,10,378
+86,Native American,0,1
+86,Hispanic,0,10
+86,Black,1,4
+87,Asian/Pacific Islander,0,2
+87,White,11,291
+87,Native American,0,0
+87,Hispanic,0,3
+87,Black,1,2
+88,Asian/Pacific Islander,2,0
+88,White,8,314
+88,Native American,0,2
+88,Hispanic,1,8
+88,Black,0,4
+89,Asian/Pacific Islander,0,0
+89,White,9,218
+89,Native American,0,0
+89,Hispanic,2,8
+89,Black,1,3
+90,Asian/Pacific Islander,0,0
+90,White,7,192
+90,Native American,0,0
+90,Hispanic,1,2
+90,Black,2,3
+91,Asian/Pacific Islander,0,1
+91,White,2,164
+91,Native American,0,0
+91,Hispanic,1,2
+91,Black,0,2
+92,Asian/Pacific Islander,0,0
+92,White,2,118
+92,Native American,0,0
+92,Hispanic,0,1
+92,Black,1,2
+93,Asian/Pacific Islander,0,0
+93,White,1,94
+93,Native American,0,1
+93,Hispanic,1,1
+93,Black,1,4
+94,Asian/Pacific Islander,0,0
+94,White,1,58
+94,Native American,0,0
+94,Hispanic,0,1
+94,Black,1,1
+95,Asian/Pacific Islander,0,0
+95,White,1,48
+95,Native American,0,1
+95,Hispanic,0,0
+95,Black,2,1
+96,Asian/Pacific Islander,0,0
+96,White,3,34
+96,Native American,0,0
+96,Hispanic,0,0
+96,Black,0,1
+97,Asian/Pacific Islander,0,0
+97,White,2,18
+97,Native American,0,0
+97,Hispanic,0,0
+97,Black,0,0
+98,Asian/Pacific Islander,0,0
+98,White,0,16
+98,Native American,0,0
+98,Hispanic,0,0
+98,Black,0,0
+99,Asian/Pacific Islander,0,0
+99,White,0,5
+99,Native American,0,0
+99,Hispanic,0,0
+99,Black,1,0
