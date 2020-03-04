@@ -8,7 +8,7 @@ var x = d3.scaleLinear().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
 
 var races = ["Asian/Pacific Islander", "Black", "Hispanic", "Native American", "White"];
-var colors = ["#A6ACAF", "#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"];
+var colors = ["#A6ACAF", "#52BE80", "#5DADE2", "#E74C3C", "#2471A3", "#E67E22"];
 
 // define the line
 function valueline(intent) {
@@ -47,7 +47,6 @@ d3.csv(csvFile, function(d) {
     d.SuicideCnt = +d.SuicideCnt;
     return d;
   }).then(function(data){
-
     // Scale the range of the data
     x.domain([0, d3.max(data, function(d) { return d.Age; })]);
     y.domain([0, 1500]).range([height, 10]);
@@ -55,8 +54,9 @@ d3.csv(csvFile, function(d) {
 
     // Add the valueline path.
     for (let i = 0; i < races.length; i++) {
+      var filteredData = getFilteredData(data, races[i]);
       svg.append("path")
-          .data([getFilteredData(data, races[i])])
+          .data([filteredData])
           .attr("fill", "none")
           .attr("stroke", colors[i])
           .attr("stroke-width", "2px")
