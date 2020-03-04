@@ -39,7 +39,7 @@ var svg = d3.select("body").append("svg")
           "translate(" + margin.left + "," + margin.top + ")");
 
 // Get the data
-const csvFile = require("./lineData.csv");
+const csvFile = require("./lineGraphData.csv");
 d3.csv(csvFile, function(d) {
     // format the data
     d.Age = +d.Age;
@@ -56,11 +56,11 @@ d3.csv(csvFile, function(d) {
     // Add the valueline path.
     for (let i = 0; i < races.length; i++) {
       svg.append("path")
-          .data(getFilteredData(data, races[i]))
+          .data([getFilteredData(data, races[i])])
           .attr("fill", "none")
           .attr("stroke", colors[i])
           .attr("stroke-width", "2px")
-          .attr("d", valueline(2));
+          .attr("d", valueline(1));
     }
 
     // Add the X Axis
