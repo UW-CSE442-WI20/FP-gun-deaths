@@ -118,7 +118,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"vVhW":[function(require,module,exports) {
-module.exports = "https://uw-cse442-wi20.github.io/FP-gun-deaths/lineGraphData.afa21eec.csv";
+module.exports = "https://uw-cse442-wi20.github.io/FP-gun-deaths/lineGraphData.601118c6.csv";
 },{}],"U9Po":[function(require,module,exports) {
 // set the dimensions and margins of the graph
 var margin = {
@@ -133,7 +133,7 @@ var margin = {
 var x = d3.scaleLinear().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
 var races = ["Asian/Pacific Islander", "Black", "Hispanic", "Native American", "White"];
-var colors = ["#A6ACAF", "#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"]; // define the line
+var colors = ["#A6ACAF", "#52BE80", "#5DADE2", "#E74C3C", "#2471A3", "#E67E22"]; // define the line
 
 function valueline(intent) {
   return d3.line().x(function (d) {
@@ -177,23 +177,86 @@ d3.csv(csvFile, function (d) {
   // Add the valueline path.
 
   for (var i = 0; i < races.length; i++) {
-    svg.append("path").data([getFilteredData(data, races[i])]).attr("fill", "none").attr("stroke", colors[i]).attr("stroke-width", "2px").attr("d", valueline(1));
+    var filteredData = getFilteredData(data, races[i]);
+    svg.append("path").attr("class", "line").data([filteredData]).attr("stroke", colors[i]).attr("d", valueline(1));
   } // Add the X Axis
 
 
   svg.append("g").attr("transform", "translate(0," + height + ")").call(d3.axisBottom(x)); // Add the Y Axis
 
   svg.append("g").call(d3.axisLeft(y));
+  addLegend();
+  addMouseOver();
 });
 
-function getMaxValue(d) {
-  var maxValue = d[1].value;
+function addLegend() {
+  var legend = svg.selectAll(".legend").data(races).enter().append("g").attr("transform", function (d, i) {
+    return "translate(" + (width - 100) + "," + (i * 15 + 20) + ")";
+  }).attr("class", "legend");
+  legend.append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d, i) {
+    return colors[i];
+  });
+  legend.append("text").text(function (d, i) {
+    return races[i];
+  }).style("font-size", 12).attr("y", 10).attr("x", 11);
+}
 
-  for (var i = 1; i < d.length; i++) {
-    maxValue = Math.max(maxValue, d[i].value);
-  }
+function addMouseOver() {
+  var mouseG = svg.append("g").attr("class", "mouse-over-effects");
+  mouseG.append("path") // this is the black vertical line to follow mouse
+  .attr("class", "mouse-line");
+  var lines = document.getElementsByClassName('line');
+  var mousePerLine = mouseG.selectAll('.mouse-per-line').data(races).enter().append("g").attr("class", "mouse-per-line");
+  mousePerLine.append("circle").attr("r", 5).style("stroke", "black").style("fill", function (d, i) {
+    return colors[i];
+  }).style("stroke-width", "1px").style("opacity", "0");
+  mousePerLine.append("text").attr("transform", "translate(10,3)");
+  mouseG.append('svg:rect') // append a rect to catch mouse movements on canvas
+  .attr('width', width) // can't catch mouse events on a g element
+  .attr('height', height).attr('fill', 'none').attr('pointer-events', 'all').on('mouseout', function () {
+    // on mouse out hide line, circles and text
+    d3.select(".mouse-line").style("opacity", "0");
+    d3.selectAll(".mouse-per-line circle").style("opacity", "0");
+    d3.selectAll(".mouse-per-line text").style("opacity", "0");
+  }).on('mouseover', function () {
+    // on mouse in show line, circles and text
+    d3.select(".mouse-line").style("opacity", "1");
+    d3.selectAll(".mouse-per-line circle").style("opacity", "1");
+    d3.selectAll(".mouse-per-line text").style("opacity", "1");
+  }).on('mousemove', function () {
+    // mouse moving over canvas
+    var mouse = d3.mouse(this);
+    d3.select(".mouse-line").attr("d", function () {
+      var d = "M" + mouse[0] + "," + height;
+      d += " " + mouse[0] + "," + 0;
+      return d;
+    });
+    d3.selectAll(".mouse-per-line").attr("transform", function (d, i) {
+      //console.log(width/mouse[0])
+      var xAge = x.invert(mouse[0]),
+          bisect = d3.bisector(function (d) {
+        return d.Age;
+      }).right; //idx = bisect(d.values, xAge);
 
-  return maxValue;
+      var beginning = 0,
+          end = lines[i].getTotalLength(),
+          target = null;
+
+      while (true) {
+        target = Math.floor((beginning + end) / 2);
+        pos = lines[i].getPointAtLength(target);
+
+        if ((target === end || target === beginning) && pos.x !== mouse[0]) {
+          break;
+        }
+
+        if (pos.x > mouse[0]) end = target;else if (pos.x < mouse[0]) beginning = target;else break; //position found
+      }
+
+      d3.select(this).select('text').text(y.invert(pos.y).toFixed(0));
+      return "translate(" + mouse[0] + "," + pos.y + ")";
+    });
+  });
 }
 },{"./lineGraphData.csv":"vVhW"}]},{},["U9Po"], null)
-//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/lineGraph.5e32d827.js.map
+//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/lineGraph.8355821f.js.map

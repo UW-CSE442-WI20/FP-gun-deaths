@@ -15,6 +15,9 @@ var pack = d3.pack()
     .padding(pad);
 
 function getFilteredData(data, intent, ageGroup) {
+  console.log(data);
+  console.log(intent);
+  console.log(ageGroup);
   if (intent == 1 && ageGroup == 0) { // double equals allows interpolation
     // both homicide and suicide
     return data;
@@ -34,6 +37,8 @@ function getFilteredData(data, intent, ageGroup) {
 }
 
 // read in CSV data
+var globalData;
+var globalAge = 0;
 const csvFile = require("./bubbleGraphData.csv");
 d3.csv(csvFile, function(d) {
         d.Deaths = +d.Deaths;
@@ -45,6 +50,7 @@ d3.csv(csvFile, function(d) {
     var intent = $intentSelector.value;
     var ageGroup = 0;
     var intentData = getFilteredData(d, $intentSelector.value, ageGroup);
+    globalData = d;
 
     enterCircles(intentData);
 
@@ -59,6 +65,7 @@ d3.csv(csvFile, function(d) {
         .on('onchange', val => {
             d3.select('p#value-age').text((ages[val]));
             ageGroup = val;
+            globalAge = ageGroup;
             var ageData = getFilteredData(d, intent, ageGroup);
             console.log(ageData);
             updateCircles(ageData);
@@ -76,14 +83,14 @@ d3.csv(csvFile, function(d) {
 
     d3.select('p#value-age').text((ages[sliderAge.value()]));
 
-    $intentSelector.onchange = function(e) {
-      intent = e.target.value;
-      var intentData = getFilteredData(d, intent, ageGroup);
+    // $intentSelector.onchange = function(e) {
+    //   intent = e.target.value;
+    //   var intentData = getFilteredData(d, intent, ageGroup);
 
 
-      updateCircles(intentData);
+    //   updateCircles(intentData);
 
-    };
+    // };
 })
 
 // hard cap @ 6 circles, so hard math was performed on rendering
@@ -238,3 +245,17 @@ function getMaxValue(d) {
   }
   return currMax;
 }
+
+class bubbleUpdate {
+  constructor() {}
+
+  updateGraph() {
+    console.log(globalData);
+    var $intentSelector = document.getElementById("intent-select");
+    var intentData = getFilteredData(globalData, $intentSelector.value, globalAge);
+    console.log(intentData);
+    updateCircles(intentData);
+  }
+}
+
+module.exports = bubbleUpdate;

@@ -108,12 +108,12 @@ Age,Race,HomicideCnt,SuicideCnt
 21,White,224,639
 21,Native American,12,21
 21,Hispanic,267,80
-21,Black,"1,047",111
+21,Black,1047,111
 22,Asian/Pacific Islander,18,20
 22,White,221,704
 22,Native American,12,19
 22,Hispanic,306,142
-22,Black,"1,071",127
+22,Black,1071,127
 23,Asian/Pacific Islander,18,17
 23,White,204,733
 23,Native American,10,15
@@ -240,72 +240,72 @@ Age,Race,HomicideCnt,SuicideCnt
 47,Hispanic,42,53
 47,Black,202,46
 48,Asian/Pacific Islander,6,15
-48,White,179,"1,066"
+48,White,179,1066
 48,Native American,6,10
 48,Hispanic,41,62
 48,Black,154,52
 49,Asian/Pacific Islander,12,12
-49,White,193,"1,096"
+49,White,193,1096
 49,Native American,4,7
 49,Hispanic,43,51
 49,Black,162,52
 50,Asian/Pacific Islander,14,10
-50,White,178,"1,130"
+50,White,178,1130
 50,Native American,4,9
 50,Hispanic,41,45
 50,Black,150,54
 51,Asian/Pacific Islander,9,13
-51,White,186,"1,219"
+51,White,186,1219
 51,Native American,2,6
 51,Hispanic,52,56
 51,Black,126,44
 52,Asian/Pacific Islander,6,11
-52,White,174,"1,224"
+52,White,174,1224
 52,Native American,2,10
 52,Hispanic,36,44
 52,Black,118,45
 53,Asian/Pacific Islander,5,8
-53,White,148,"1,272"
+53,White,148,1272
 53,Native American,2,10
 53,Hispanic,33,46
 53,Black,107,40
 54,Asian/Pacific Islander,2,12
-54,White,142,"1,283"
+54,White,142,1283
 54,Native American,5,7
 54,Hispanic,31,42
 54,Black,81,46
 55,Asian/Pacific Islander,8,10
-55,White,124,"1,226"
+55,White,124,1226
 55,Native American,1,10
 55,Hispanic,27,36
 55,Black,72,42
 56,Asian/Pacific Islander,8,12
-56,White,132,"1,250"
+56,White,132,1250
 56,Native American,1,6
 56,Hispanic,20,41
 56,Black,89,34
 57,Asian/Pacific Islander,4,8
-57,White,119,"1,144"
+57,White,119,1144
 57,Native American,1,9
 57,Hispanic,14,35
 57,Black,76,30
 58,Asian/Pacific Islander,7,8
-58,White,122,"1,191"
+58,White,122,1191
 58,Native American,1,5
 58,Hispanic,11,28
 58,Black,63,42
 59,Asian/Pacific Islander,3,10
-59,White,122,"1,113"
+59,White,122,1113
 59,Native American,0,7
 59,Hispanic,23,36
 59,Black,56,30
 60,Asian/Pacific Islander,5,11
-60,White,88,"1,112"
+60,White,88,1112
 60,Native American,2,7
 60,Hispanic,10,20
 60,Black,40,37
 61,Asian/Pacific Islander,7,9
-61,White,97,"1,050"
+61,White,97,1050
 61,Native American,3,3
 61,Hispanic,13,32
 61,Black,35,29

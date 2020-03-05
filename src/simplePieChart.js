@@ -27,6 +27,7 @@ var color = d3.scaleOrdinal(['#1F75FE','#FFC0CB']);
 var pie = d3.pie();
 
 function pieChartUpdate() {
+    console.log("function pieChartUpdate is called!");
     svg.selectAll("path")
         .data(pie(current))
         .transition()
@@ -137,6 +138,8 @@ function getFilteredData(data, intent) {
     }
 }
 
+// unnecessary but ill refactor later if i have time
+var globalData;
 // read in CSV data
 const csvMvF = require("./MvF.csv");
 d3.csv(csvMvF, function(d) {
@@ -145,18 +148,19 @@ d3.csv(csvMvF, function(d) {
 }).then(function(d) {
     var $intentSelector = document.getElementById("intent-select");
     var intent = $intentSelector.value;
+    globalData = d;
     getFilteredData(d, $intentSelector.value);
 
     pieChartCreate();
 
-    $intentSelector.onchange = function(e) {
-        intent = e.target.value;
-        getFilteredData(d, intent);
-        console.log(current);
+    // $intentSelector.onchange = function(e) {
+    //     intent = e.target.value;
+    //     getFilteredData(d, intent);
+    //     console.log(current);
   
-        pieChartUpdate();
+    //     pieChartUpdate();
   
-    };
+    // };
 })
 
 // html for intent selecter for piechart
@@ -169,3 +173,16 @@ d3.csv(csvMvF, function(d) {
 //        <option value=3>Suicide</option>
 //      </select>
 //</div>
+
+class piUpdate {
+    constructor() {}
+
+    updatePiChart() {
+        console.log("class pichart function is called");
+        var $intentSelector = document.getElementById("intent-select");
+        getFilteredData(globalData, $intentSelector.value);
+        pieChartUpdate();
+    }
+}
+
+module.exports = piUpdate;

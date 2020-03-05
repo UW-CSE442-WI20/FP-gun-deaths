@@ -117,7 +117,165 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"bubbleGraphData.csv":[function(require,module,exports) {
+})({"MvF.csv":[function(require,module,exports) {
+module.exports = "/MvF.327b80e7.csv";
+},{}],"simplePieChart.js":[function(require,module,exports) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var genders = ["Male", "Female"];
+var intents = ["Homicide", "Suicide"];
+var padding = 50;
+var deaths = [54486, 8689, 29803, 5373]; // MS, FS, MH, FH
+
+var current = [];
+var percentage = [];
+var width = 300;
+var height = 200;
+var radius = Math.min(width, height) / 2;
+var svg = d3.select("body").append("svg").attr("width", width + padding).attr("height", height + padding);
+g = svg.append("g").attr("transform", "translate(" + (width + padding) / 2 + "," + (height + padding) / 2 + ")"); // Generate the arcs
+
+var arc = d3.arc().innerRadius(0).outerRadius(radius);
+var color = d3.scaleOrdinal(['#1F75FE', '#FFC0CB']); // Generate the pie
+
+var pie = d3.pie();
+
+function pieChartUpdate() {
+  console.log("function pieChartUpdate is called!");
+  svg.selectAll("path").data(pie(current)).transition().duration(2000).attr("d", arc); // svg.selectAll("arc").selectAll("percentage").remove();
+
+  console.log(svg.selectAll("text.percentage"));
+  svg.selectAll("text.percentage").data(pie(current)).transition().attr("transform", function (d, i) {
+    var _d = arc.centroid(d);
+
+    console.log(_d);
+    _d[0] *= 2.2; //multiply by a constant factor
+
+    _d[1] *= 2.2; //multiply by a constant factor
+
+    return "translate(" + _d + ")";
+  }).attr("dy", ".50em").style("text-anchor", "middle").text(function (d, i) {
+    return percentage[i].toFixed(2) + '%';
+  });
+}
+
+function pieChartCreate() {
+  //Generate groups
+  var arcs = g.selectAll("arc").data(pie(current)).enter().append("g").attr("class", "arc"); //Draw arc paths
+
+  arcs.append("path").attr("fill", function (d, i) {
+    return color(i);
+  }).attr("d", arc); // creates the lengend for the pie chart
+
+  var legendP = svg.selectAll(".legend").data(pie(current)).enter().append("g").attr("transform", function (d, i) {
+    return "translate(" + (width - 50) + "," + (i * 15 + 20) + ")";
+  }).attr("class", "legend");
+  legendP.append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d, i) {
+    return color(i);
+  });
+  legendP.append("text").text(function (d, i) {
+    return genders[i];
+  }).style("font-size", 12).attr("y", 10).attr("x", 11); // percentages for pie chart
+
+  g.selectAll("percentage").data(pie(current)).enter().append("text").attr("class", "percentage").attr("transform", function (d, i) {
+    var _d = arc.centroid(d);
+
+    console.log(_d);
+    _d[0] *= 2.2; //multiply by a constant factor
+
+    _d[1] *= 2.2; //multiply by a constant factor
+
+    return "translate(" + _d + ")";
+  }).attr("dy", ".50em").style("text-anchor", "middle").text(function (d, i) {
+    return percentage[i].toFixed(2) + '%';
+  });
+} // grabs the data about Male v Female, filtered on intent
+
+
+function getFilteredData(data, intent) {
+  if (intent == 1) {
+    // double equals allows interpolation
+    // both homicide and suicide
+    current = [deaths[0] + deaths[2], deaths[1] + deaths[3]];
+    var total_deaths = deaths[0] + deaths[2] + deaths[1] + deaths[3];
+    percentage = [current[0] / total_deaths, current[1] / total_deaths];
+    return data;
+  } else if (intent == 2) {
+    // homicide
+    current = [deaths[2], deaths[3]];
+    var total_deaths = deaths[2] + deaths[3];
+    percentage = [current[0] / total_deaths, current[1] / total_deaths];
+    return data.filter(function (d) {
+      return d.Intent === "Homicide";
+    });
+  } else {
+    // intent == 3
+    // suicide
+    current = [deaths[0], deaths[1]];
+    var total_deaths = deaths[0] + deaths[1];
+    percentage = [current[0] / total_deaths, current[1] / total_deaths];
+    return data.filter(function (d) {
+      return d.Intent === "Suicide";
+    });
+  }
+} // unnecessary but ill refactor later if i have time
+
+
+var globalData; // read in CSV data
+
+var csvMvF = require("./MvF.csv");
+
+d3.csv(csvMvF, function (d) {
+  d.Deaths = +d.Deaths;
+  return d;
+}).then(function (d) {
+  var $intentSelector = document.getElementById("intent-select");
+  var intent = $intentSelector.value;
+  globalData = d;
+  getFilteredData(d, $intentSelector.value);
+  pieChartCreate(); // $intentSelector.onchange = function(e) {
+  //     intent = e.target.value;
+  //     getFilteredData(d, intent);
+  //     console.log(current);
+  //     pieChartUpdate();
+  // };
+}); // html for intent selecter for piechart
+//
+//<div id="intent-pie">
+//    <h3>Intent (Pie Chart):</h3>
+//      <select id="intent-pie-select">
+//        <option value=1 selected>All Deaths</option>
+//        <option value=2>Homicide</option>
+//        <option value=3>Suicide</option>
+//      </select>
+//</div>
+
+var piUpdate =
+/*#__PURE__*/
+function () {
+  function piUpdate() {
+    _classCallCheck(this, piUpdate);
+  }
+
+  _createClass(piUpdate, [{
+    key: "updatePiChart",
+    value: function updatePiChart() {
+      console.log("class pichart function is called");
+      var $intentSelector = document.getElementById("intent-select");
+      getFilteredData(globalData, $intentSelector.value);
+      pieChartUpdate();
+    }
+  }]);
+
+  return piUpdate;
+}();
+
+module.exports = piUpdate;
+},{"./MvF.csv":"MvF.csv"}],"bubbleGraphData.csv":[function(require,module,exports) {
 module.exports = "/bubbleGraphData.9a6e47f8.csv";
 },{}],"bubbleGraph.js":[function(require,module,exports) {
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -138,6 +296,10 @@ svg.attr("width", diameter).attr("height", diameter).attr("border", 0);
 var pack = d3.pack().size([diameter - 50, diameter]).padding(pad);
 
 function getFilteredData(data, intent, ageGroup) {
+  console.log(data);
+  console.log(intent);
+  console.log(ageGroup);
+
   if (intent == 1 && ageGroup == 0) {
     // double equals allows interpolation
     // both homicide and suicide
@@ -169,7 +331,7 @@ function getFilteredData(data, intent, ageGroup) {
 
 
 var globalData;
-var globalAge;
+var globalAge = 0;
 
 var csvFile = require("./bubbleGraphData.csv");
 
@@ -196,13 +358,11 @@ d3.csv(csvFile, function (d) {
   });
   var gAge = d3.select('div#slider-age').append('svg').attr('width', 500).attr('height', 100).append('g').attr('transform', 'translate(30,30)');
   gAge.call(sliderAge);
-  d3.select('p#value-age').text(ages[sliderAge.value()]);
-
-  $intentSelector.onchange = function (e) {
-    intent = e.target.value;
-    var intentData = getFilteredData(d, intent, ageGroup);
-    updateCircles(intentData);
-  };
+  d3.select('p#value-age').text(ages[sliderAge.value()]); // $intentSelector.onchange = function(e) {
+  //   intent = e.target.value;
+  //   var intentData = getFilteredData(d, intent, ageGroup);
+  //   updateCircles(intentData);
+  // };
 }); // hard cap @ 6 circles, so hard math was performed on rendering
 // hard padding @ 50 on each side, so actual svg is 500x500
 
@@ -303,8 +463,11 @@ function () {
   _createClass(bubbleUpdate, [{
     key: "updateGraph",
     value: function updateGraph() {
+      console.log(globalData);
       var $intentSelector = document.getElementById("intent-select");
-      updateCircles(getFilteredData(globalData, $intentSelector.value, globalAge));
+      var intentData = getFilteredData(globalData, $intentSelector.value, globalAge);
+      console.log(intentData);
+      updateCircles(intentData);
     }
   }]);
 
@@ -312,7 +475,26 @@ function () {
 }();
 
 module.exports = bubbleUpdate;
-},{"./bubbleGraphData.csv":"bubbleGraphData.csv"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./bubbleGraphData.csv":"bubbleGraphData.csv"}],"updateGraphs.js":[function(require,module,exports) {
+var piChart = require("./simplePieChart.js");
+
+var bubbleGraph = require("./bubbleGraph.js");
+
+var piChartInstance = new piChart();
+var bubbleGraphInstance = new bubbleGraph();
+var $intentSelector = document.getElementById("intent-select");
+
+function updateAll() {
+  console.log("should be here");
+  piChartInstance.updatePiChart();
+  bubbleGraphInstance.updateGraph();
+}
+
+$intentSelector.onchange = function (e) {
+  console.log("here!");
+  updateAll();
+};
+},{"./simplePieChart.js":"simplePieChart.js","./bubbleGraph.js":"bubbleGraph.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -516,5 +698,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","bubbleGraph.js"], null)
-//# sourceMappingURL=/bubbleGraph.fd32e917.js.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","updateGraphs.js"], null)
+//# sourceMappingURL=/updateGraphs.9723fc8b.js.map

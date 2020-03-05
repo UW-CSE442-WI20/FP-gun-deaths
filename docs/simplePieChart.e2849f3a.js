@@ -120,6 +120,12 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 })({"MvF.csv":[function(require,module,exports) {
 module.exports = "/MvF.327b80e7.csv";
 },{}],"simplePieChart.js":[function(require,module,exports) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 var genders = ["Male", "Female"];
 var intents = ["Homicide", "Suicide"];
 var padding = 50;
@@ -215,8 +221,10 @@ function getFilteredData(data, intent) {
       return d.Intent === "Suicide";
     });
   }
-} // read in CSV data
+} // unnecessary but ill refactor later if i have time
 
+
+var globalData; // read in CSV data
 
 var csvMvF = require("./MvF.csv");
 
@@ -226,6 +234,7 @@ d3.csv(csvMvF, function (d) {
 }).then(function (d) {
   var $intentSelector = document.getElementById("intent-select");
   var intent = $intentSelector.value;
+  globalData = d;
   getFilteredData(d, $intentSelector.value);
   pieChartCreate();
 
@@ -245,6 +254,27 @@ d3.csv(csvMvF, function (d) {
 //        <option value=3>Suicide</option>
 //      </select>
 //</div>
+
+var piUpdate =
+/*#__PURE__*/
+function () {
+  function piUpdate() {
+    _classCallCheck(this, piUpdate);
+  }
+
+  _createClass(piUpdate, [{
+    key: "updatePiChart",
+    value: function updatePiChart() {
+      var $intentSelector = document.getElementById("intent-select");
+      getFilteredData(globalData, $intentSelector.value);
+      pieChartUpdate();
+    }
+  }]);
+
+  return piUpdate;
+}();
+
+module.exports = piUpdate;
 },{"./MvF.csv":"MvF.csv"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -273,7 +303,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55878" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65440" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

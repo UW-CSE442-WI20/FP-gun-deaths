@@ -5,40 +5,50 @@ body{
     flex-direction: column;
     align-items: center;
   }
-  
+
   #specs{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
   }
-  
+
   #age{
     display: flex;
     flex-direction: row;
     align-items: center;
     padding-left: 30px;
   }
-  
+
   #intent{
     display: flex;
     flex-direction: row;
     align-items: center;
     padding-right: 30px;
   }
-  
+
   #value-age{
     padding-left: 20px;
     width: 50px;
   }
-  
+
+  .line {
+    fill: none;
+    stroke-width: 2px;
+  }
+
+  .mouse-line {
+    stroke: gray;
+    stroke-width: 1.5px;
+    opacity: 0;
+  }
   /* .tick text {
     opacity: 0;
   }
-  
+
   .parameter-value text {
     opacity: 0;
   } */
-  
+
 
 /*# sourceMappingURL=/src.9ad09f98.css.map */
