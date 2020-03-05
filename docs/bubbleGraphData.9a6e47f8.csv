@@ -19,16 +19,6 @@ Suicide,35 - 64,Black,476,14848291,3.2
 Suicide,65+,Black,117,3830699,3.1
 Suicide,None selected,Black,1111,38896382,2.9
 Suicide,Under 15,Black,7,8323603,0.1
-Homicide,15 - 34,Everyone,7335,86611149,8.5
-Homicide,35 - 64,Everyone,3792,123935928,3.1
-Homicide,65+,Everyone,375,44667034,0.8
-Homicide,None selected,Everyone,11726,316299978,3.7
-Homicide,Under 15,Everyone,221,61085868,0.4
-Suicide,15 - 34,Everyone,5061,86611149,5.8
-Suicide,35 - 64,Everyone,10764,123935928,8.7
-Suicide,65+,Everyone,5092,44667034,11.4
-Suicide,None selected,Everyone,21058,316299978,6.7
-Suicide,Under 15,Everyone,139,61085868,0.2
 Homicide,15 - 34,Hispanic,1296,17960261,7.2
 Homicide,35 - 64,Hispanic,514,17777422,2.9
 Homicide,65+,Hispanic,22,3316947,0.7
