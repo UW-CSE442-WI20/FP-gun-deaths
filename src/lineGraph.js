@@ -39,6 +39,7 @@ var svg = d3.select("body").append("svg")
           "translate(" + margin.left + "," + margin.top + ")");
 
 // Get the data
+var globalData;
 const csvFile = require("./lineGraphData.csv");
 d3.csv(csvFile, function(d) {
     // format the data
@@ -47,6 +48,8 @@ d3.csv(csvFile, function(d) {
     d.SuicideCnt = +d.SuicideCnt;
     return d;
   }).then(function(data){
+    globalData = data;
+    var $intentSelector = document.getElementById("intent-select");
     // Scale the range of the data
     x.domain([0, d3.max(data, function(d) { return d.Age; })]);
     y.domain([0, 1500]).range([height, 10]);
@@ -59,7 +62,7 @@ d3.csv(csvFile, function(d) {
           .attr("class", "line")
           .data([filteredData])
           .attr("stroke", colors[i])
-          .attr("d", valueline(1));
+          .attr("d", valueline($intentSelector.value));
     }
 
     // Add the X Axis
@@ -76,6 +79,16 @@ d3.csv(csvFile, function(d) {
     addMouseOver();
 
   })
+
+  function updateLines(intent) {
+    console.log("updateLines is called!!!!!!!!!")
+
+    svg.selectAll(".line")
+    .transition()
+    .duration(2000)
+    .attr("d", valueline(intent));
+  }
+
 
   function addLegend() {
     var legend = svg.selectAll(".legend")
@@ -189,3 +202,14 @@ d3.csv(csvFile, function(d) {
         });
     });
   }
+
+  class lineUpdate {
+    constructor() {}
+
+    updateGraph() {
+      var $intentSelector = document.getElementById("intent-select");
+      updateLines($intentSelector.value);
+    }
+  }
+
+  module.exports = lineUpdate;
