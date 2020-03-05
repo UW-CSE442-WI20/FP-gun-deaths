@@ -47,7 +47,6 @@ d3.csv(csvFile, function(d) {
         return d;
 }).then(function(d) {
     var $intentSelector = document.getElementById("intent-select");
-    var intent = $intentSelector.value;
     var ageGroup = 0;
     var intentData = getFilteredData(d, $intentSelector.value, ageGroup);
     globalData = d;
@@ -66,7 +65,7 @@ d3.csv(csvFile, function(d) {
             d3.select('p#value-age').text((ages[val]));
             ageGroup = val;
             globalAge = ageGroup;
-            var ageData = getFilteredData(d, intent, ageGroup);
+            var ageData = getFilteredData(d, $intentSelector.value, ageGroup);
             console.log(ageData);
             updateCircles(ageData);
         });

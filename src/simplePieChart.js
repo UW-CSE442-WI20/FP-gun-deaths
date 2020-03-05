@@ -39,6 +39,7 @@ function pieChartUpdate() {
     svg.selectAll("text.percentage")
         .data(pie(current))
         .transition()
+        .duration(2000)
     	.attr("transform", function(d, i) {
         var _d = arc.centroid(d);
         console.log(_d);
