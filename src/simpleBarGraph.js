@@ -12,14 +12,29 @@ var y = d3.scaleLinear();
 svg.append("g")
     .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
 
+var globalData;
 const csvFile = require("./places.csv");
 d3.csv(csvFile).then(function(d) {
     generateGraph(d);
+    globalData = d;
 })
+
+function getFilteredData(data, intent) {
+    if (intent == 1) { // double equals allows interpolation
+        // both homicide and suicide
+        return data;
+    } else if (intent == 2) {
+        // homicide
+        return data.filter(function(d) { return d.Intent === "Homicide"});
+    } else {  // intent == 3
+        // suicide
+        return data.filter(function(d) { return d.Intent === "Suicide"});
+    }
+    
+}
 
 
 function generateGraph(d) {
-
     var nestedData = d3.nest()
         .key(function(d) { return d.Place;})
         .rollup(function(d) {
@@ -73,13 +88,44 @@ function generateGraph(d) {
     svg.selectAll("bar")
         .data(nestedData)
         .enter().append("rect")
+        .attr("class", "placeBar")
         .style("fill", function(d) {
-            return "rgb(0, 0, " + Math.round(y(d.value)) * 10 + ")";
+            var red = 255 - Math.round(y(d.value)) / 4;
+            var green = 0 + Math.round(y(d.value)) / 1.5;
+            return "rgb(" + red + ", " + green + ", 26)"; 
         })
         .attr("x", function(d, i) {return x(d.key) + margin.left; })
         .attr("y", function(d, i) { return y(d.value); })
         .transition()
         .duration(1000)
+        .attr("width", x.bandwidth() - padding)
+        .attr("height", function(d, i) { return height - y(d.value); });
+}
+
+function updateGraph(d) {
+    var nestedData = d3.nest()
+        .key(function(d) { return d.Place;})
+        .rollup(function(d) {
+            return d3.sum(d, function(d) {
+              return d.Deaths;  
+            })
+          })
+        .entries(d);
+
+    nestedData = nestedData.sort(function(d) {return d3.descending(d.value)});
+
+    y.range([height - 10, margin.bottom / 2]); // augment for drawing
+    svg.selectAll("rect.placeBar")
+        .data(nestedData)
+        .transition()
+        .duration(1000)
+        .style("fill", function(d) {
+            var red = 255 - Math.round(y(d.value)) / 4;
+            var green = 0 + Math.round(y(d.value)) / 1.5;
+            return "rgb(" + red + ", " + green + ", 26)"; 
+        })
+        .attr("x", function(d, i) {return x(d.key) + margin.left; })
+        .attr("y", function(d, i) { return y(d.value); })
         .attr("width", x.bandwidth() - padding)
         .attr("height", function(d, i) { return height - y(d.value); });
 }
@@ -91,3 +137,15 @@ function getMaxValue(d) {
     }
     return maxValue;
 }
+
+class placeUpdate {
+    constructor() {}
+  
+    updatePlace() {
+      var $intentSelector = document.getElementById("intent-select");
+      var intentData = getFilteredData(globalData, $intentSelector.value);
+      updateGraph(intentData);
+    }
+  }
+  
+  module.exports = placeUpdate;

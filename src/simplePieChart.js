@@ -27,7 +27,6 @@ var color = d3.scaleOrdinal(['#1F75FE','#FFC0CB']);
 var pie = d3.pie();
 
 function pieChartUpdate() {
-    console.log("function pieChartUpdate is called!");
     svg.selectAll("path")
         .data(pie(current))
         .transition()
@@ -35,14 +34,12 @@ function pieChartUpdate() {
         .attr("d", arc);
     
     // svg.selectAll("arc").selectAll("percentage").remove();
-    console.log(svg.selectAll("text.percentage"));
     svg.selectAll("text.percentage")
         .data(pie(current))
         .transition()
         .duration(2000)
     	.attr("transform", function(d, i) {
         var _d = arc.centroid(d);
-        console.log(_d);
         _d[0] *= 2.2;	//multiply by a constant factor
         _d[1] *= 2.2;	//multiply by a constant factor
         return "translate(" + _d + ")";
@@ -104,7 +101,6 @@ function pieChartCreate() {
         .attr("class", "percentage")
     	.attr("transform", function(d, i) {
         var _d = arc.centroid(d);
-        console.log(_d);
         _d[0] *= 2.2;	//multiply by a constant factor
         _d[1] *= 2.2;	//multiply by a constant factor
         return "translate(" + _d + ")";
@@ -179,7 +175,6 @@ class piUpdate {
     constructor() {}
 
     updatePiChart() {
-        console.log("class pichart function is called");
         var $intentSelector = document.getElementById("intent-select");
         getFilteredData(globalData, $intentSelector.value);
         pieChartUpdate();

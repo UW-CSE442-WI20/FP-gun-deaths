@@ -200,7 +200,6 @@ d3.csv(csvFile, function (d) {
 });
 
 function updateLines(intent) {
-  console.log("updateLines is called!!!!!!!!!");
   svg.selectAll(".line").transition().duration(2000).attr("d", valueline(intent));
 }
 
@@ -321,14 +320,11 @@ var color = d3.scaleOrdinal(['#1F75FE', '#FFC0CB']); // Generate the pie
 var pie = d3.pie();
 
 function pieChartUpdate() {
-  console.log("function pieChartUpdate is called!");
   svg.selectAll("path").data(pie(current)).transition().duration(2000).attr("d", arc); // svg.selectAll("arc").selectAll("percentage").remove();
 
-  console.log(svg.selectAll("text.percentage"));
   svg.selectAll("text.percentage").data(pie(current)).transition().duration(2000).attr("transform", function (d, i) {
     var _d = arc.centroid(d);
 
-    console.log(_d);
     _d[0] *= 2.2; //multiply by a constant factor
 
     _d[1] *= 2.2; //multiply by a constant factor
@@ -360,7 +356,6 @@ function pieChartCreate() {
   g.selectAll("percentage").data(pie(current)).enter().append("text").attr("class", "percentage").attr("transform", function (d, i) {
     var _d = arc.centroid(d);
 
-    console.log(_d);
     _d[0] *= 2.2; //multiply by a constant factor
 
     _d[1] *= 2.2; //multiply by a constant factor
@@ -440,7 +435,6 @@ function () {
   _createClass(piUpdate, [{
     key: "updatePiChart",
     value: function updatePiChart() {
-      console.log("class pichart function is called");
       var $intentSelector = document.getElementById("intent-select");
       getFilteredData(globalData, $intentSelector.value);
       pieChartUpdate();
@@ -462,7 +456,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 // define functions for handling homicide & side-annotation
 // suicide & side-annotation
-diameter = 500;
+diameter = 650;
 pad = 5;
 var ages = ["All", "Under 15", "15 - 34", "35 - 64", "65+"];
 var colors = ["#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"];
@@ -472,10 +466,6 @@ svg.attr("width", diameter).attr("height", diameter).attr("border", 0);
 var pack = d3.pack().size([diameter - 50, diameter]).padding(pad);
 
 function getFilteredData(data, intent, ageGroup) {
-  console.log(data);
-  console.log(intent);
-  console.log(ageGroup);
-
   if (intent == 1 && ageGroup == 0) {
     // double equals allows interpolation
     // both homicide and suicide
@@ -528,7 +518,6 @@ d3.csv(csvFile, function (d) {
     ageGroup = val;
     globalAge = ageGroup;
     var ageData = getFilteredData(d, $intentSelector.value, ageGroup);
-    console.log(ageData);
     updateCircles(ageData);
   });
   var gAge = d3.select('div#slider-age').append('svg').attr('width', 500).attr('height', 100).append('g').attr('transform', 'translate(30,30)');
@@ -555,7 +544,7 @@ function enterCircles(data) {
     return d.value;
   });
   var maxValue = getMaxValue(nestedData);
-  scale.domain([0, maxValue]).range([20, diameter / nestedData.length - 5 * pad]);
+  scale.domain([0, maxValue]).range([20, diameter / nestedData.length - 2 * pad]);
   var node = svg.selectAll(".node").data(pack(root).leaves()).enter().append("g").attr("class", "node").attr("transform", function (d, i) {
     return "translate(" + d.x + ", " + d.y + ")";
   });
@@ -594,7 +583,7 @@ function updateCircles(data) {
     return d.value;
   });
   var maxValue = getMaxValue(nestedData);
-  scale.domain([0, maxValue]).range([20, diameter / nestedData.length - 5 * pad]);
+  scale.domain([0, maxValue]).range([20, diameter / nestedData.length - 2 * pad]);
   var node = svg.selectAll(".node").data(pack(root).leaves()).transition().duration(2000).attr("transform", function (d, i) {
     return "translate(" + d.x + ", " + d.y + ")";
   }).call(function (node) {
@@ -638,10 +627,8 @@ function () {
   _createClass(bubbleUpdate, [{
     key: "updateGraph",
     value: function updateGraph() {
-      console.log(globalData);
       var $intentSelector = document.getElementById("intent-select");
       var intentData = getFilteredData(globalData, $intentSelector.value, globalAge);
-      console.log(intentData);
       updateCircles(intentData);
     }
   }]);
@@ -650,30 +637,179 @@ function () {
 }();
 
 module.exports = bubbleUpdate;
-},{"./bubbleGraphData.csv":"bubbleGraphData.csv"}],"updateGraphs.js":[function(require,module,exports) {
+},{"./bubbleGraphData.csv":"bubbleGraphData.csv"}],"places.csv":[function(require,module,exports) {
+module.exports = "/places.c61c2d83.csv";
+},{}],"simpleBarGraph.js":[function(require,module,exports) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var margin = {
+  top: 40,
+  right: 20,
+  left: 40,
+  bottom: 20
+};
+var size = 400;
+var width = size - margin.left - margin.right;
+var height = size - margin.top - margin.bottom;
+var padding = 5;
+var svg = d3.select("body").append("svg");
+svg.attr("width", 400).attr("height", size).attr("border", 0);
+var x = d3.scaleBand();
+var y = d3.scaleLinear();
+svg.append("g").attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
+var globalData;
+
+var csvFile = require("./places.csv");
+
+d3.csv(csvFile).then(function (d) {
+  generateGraph(d);
+  globalData = d;
+});
+
+function getFilteredData(data, intent) {
+  if (intent == 1) {
+    // double equals allows interpolation
+    // both homicide and suicide
+    return data;
+  } else if (intent == 2) {
+    // homicide
+    return data.filter(function (d) {
+      return d.Intent === "Homicide";
+    });
+  } else {
+    // intent == 3
+    // suicide
+    return data.filter(function (d) {
+      return d.Intent === "Suicide";
+    });
+  }
+}
+
+function generateGraph(d) {
+  var nestedData = d3.nest().key(function (d) {
+    return d.Place;
+  }).rollup(function (d) {
+    return d3.sum(d, function (d) {
+      return d.Deaths;
+    });
+  }).entries(d);
+  nestedData = nestedData.sort(function (d) {
+    return d3.descending(d.value);
+  });
+  x.domain(nestedData.map(function (d, i) {
+    return d.key;
+  })).range([padding, width]);
+  y.domain([0, getMaxValue(nestedData)]).range([height, margin.bottom / 2]);
+  var xAxis = d3.axisBottom().scale(x);
+  var yAxis = d3.axisLeft().scale(y).ticks(10); // title
+
+  svg.append("text").attr("transform", "translate(" + margin.left + ", " + 0 + ")").attr("x", 50).attr("y", 50).attr("font-size", "24px").text("Count of deaths by Location"); // x
+
+  svg.append("g").attr("class", "xAxis").attr("transform", "translate(" + margin.left + ", " + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "translate(" + margin.left + ", " + margin.bottom / 2 + ")").attr("transform", "rotate(-30)"); //y
+
+  svg.append("g").attr("class", "yAxis").attr("transform", "translate(" + margin.left + ", " + "0" + ")").call(yAxis); // bars
+
+  y.range([height - 10, margin.bottom / 2]); // augment for drawing
+
+  svg.selectAll("bar").data(nestedData).enter().append("rect").attr("class", "placeBar").style("fill", function (d) {
+    var red = 255 - Math.round(y(d.value)) / 4;
+    var green = 0 + Math.round(y(d.value)) / 1.5;
+    return "rgb(" + red + ", " + green + ", 26)";
+  }).attr("x", function (d, i) {
+    return x(d.key) + margin.left;
+  }).attr("y", function (d, i) {
+    return y(d.value);
+  }).transition().duration(1000).attr("width", x.bandwidth() - padding).attr("height", function (d, i) {
+    return height - y(d.value);
+  });
+}
+
+function updateGraph(d) {
+  var nestedData = d3.nest().key(function (d) {
+    return d.Place;
+  }).rollup(function (d) {
+    return d3.sum(d, function (d) {
+      return d.Deaths;
+    });
+  }).entries(d);
+  nestedData = nestedData.sort(function (d) {
+    return d3.descending(d.value);
+  });
+  y.range([height - 10, margin.bottom / 2]); // augment for drawing
+
+  svg.selectAll("rect.placeBar").data(nestedData).transition().duration(1000).style("fill", function (d) {
+    var red = 255 - Math.round(y(d.value)) / 4;
+    var green = 0 + Math.round(y(d.value)) / 1.5;
+    return "rgb(" + red + ", " + green + ", 26)";
+  }).attr("x", function (d, i) {
+    return x(d.key) + margin.left;
+  }).attr("y", function (d, i) {
+    return y(d.value);
+  }).attr("width", x.bandwidth() - padding).attr("height", function (d, i) {
+    return height - y(d.value);
+  });
+}
+
+function getMaxValue(d) {
+  var maxValue = d[0].value;
+
+  for (var i = 1; i < d.length; i++) {
+    maxValue = Math.max(maxValue, d[i].value);
+  }
+
+  return maxValue;
+}
+
+var placeUpdate =
+/*#__PURE__*/
+function () {
+  function placeUpdate() {
+    _classCallCheck(this, placeUpdate);
+  }
+
+  _createClass(placeUpdate, [{
+    key: "updatePlace",
+    value: function updatePlace() {
+      var $intentSelector = document.getElementById("intent-select");
+      var intentData = getFilteredData(globalData, $intentSelector.value);
+      updateGraph(intentData);
+    }
+  }]);
+
+  return placeUpdate;
+}();
+
+module.exports = placeUpdate;
+},{"./places.csv":"places.csv"}],"updateGraphs.js":[function(require,module,exports) {
 var lineGraph = require("./lineGraph.js");
 
 var piChart = require("./simplePieChart.js");
 
 var bubbleGraph = require("./bubbleGraph.js");
 
+var placeGraph = require("./simpleBarGraph.js");
+
 var lineGraphInstance = new lineGraph();
 var piChartInstance = new piChart();
 var bubbleGraphInstance = new bubbleGraph();
+var placeGraphInstance = new placeGraph();
 var $intentSelector = document.getElementById("intent-select");
 
 function updateAll() {
-  console.log("should be here");
+  placeGraphInstance.updatePlace();
   lineGraphInstance.updateGraph();
   piChartInstance.updatePiChart();
   bubbleGraphInstance.updateGraph();
 }
 
 $intentSelector.onchange = function (e) {
-  console.log("here!");
   updateAll();
 };
-},{"./lineGraph.js":"lineGraph.js","./simplePieChart.js":"simplePieChart.js","./bubbleGraph.js":"bubbleGraph.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./lineGraph.js":"lineGraph.js","./simplePieChart.js":"simplePieChart.js","./bubbleGraph.js":"bubbleGraph.js","./simpleBarGraph.js":"simpleBarGraph.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -701,7 +837,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60470" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52589" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

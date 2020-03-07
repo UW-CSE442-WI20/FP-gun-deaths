@@ -1,16 +1,18 @@
 const lineGraph = require("./lineGraph.js");
 const piChart = require("./simplePieChart.js");
 const bubbleGraph = require("./bubbleGraph.js");
+const placeGraph = require("./simpleBarGraph.js");
 
 const lineGraphInstance = new lineGraph();
 const piChartInstance = new piChart();
 const bubbleGraphInstance = new bubbleGraph();
+const placeGraphInstance = new placeGraph();
 
 
 var $intentSelector = document.getElementById("intent-select");
 
 function updateAll() {
-    console.log("should be here");
+    placeGraphInstance.updatePlace();
     lineGraphInstance.updateGraph();
     piChartInstance.updatePiChart();
     bubbleGraphInstance.updateGraph();
@@ -18,7 +20,6 @@ function updateAll() {
 }
 
 $intentSelector.onchange = function(e) {
-    console.log("here!");
     updateAll();
 
 };

@@ -2,7 +2,7 @@
 
 // suicide & side-annotation
 
-diameter = 500;
+diameter = 650;
 pad = 5;
 var ages = ["All", "Under 15", "15 - 34", "35 - 64", "65+"];
 var colors = ["#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"];
@@ -15,9 +15,6 @@ var pack = d3.pack()
     .padding(pad);
 
 function getFilteredData(data, intent, ageGroup) {
-  console.log(data);
-  console.log(intent);
-  console.log(ageGroup);
   if (intent == 1 && ageGroup == 0) { // double equals allows interpolation
     // both homicide and suicide
     return data;
@@ -66,7 +63,6 @@ d3.csv(csvFile, function(d) {
             ageGroup = val;
             globalAge = ageGroup;
             var ageData = getFilteredData(d, $intentSelector.value, ageGroup);
-            console.log(ageData);
             updateCircles(ageData);
         });
 
@@ -111,7 +107,7 @@ function enterCircles(data) {
   var maxValue = getMaxValue(nestedData);
 
   scale.domain([0, maxValue])
-    .range([20, (diameter / nestedData.length) - 5*pad]);
+    .range([20, (diameter / nestedData.length) - 2*pad]);
 
   var node = svg.selectAll(".node")
   .data(pack(root).leaves())
@@ -184,7 +180,7 @@ var root = d3.hierarchy({children: nestedData})
 var maxValue = getMaxValue(nestedData);
 
 scale.domain([0, maxValue])
-  .range([20, (diameter / nestedData.length) - 5*pad]);
+  .range([20, (diameter / nestedData.length) - 2*pad]);
 
   var node = svg.selectAll(".node")
   .data(pack(root).leaves())
@@ -249,10 +245,8 @@ class bubbleUpdate {
   constructor() {}
 
   updateGraph() {
-    console.log(globalData);
     var $intentSelector = document.getElementById("intent-select");
     var intentData = getFilteredData(globalData, $intentSelector.value, globalAge);
-    console.log(intentData);
     updateCircles(intentData);
   }
 }

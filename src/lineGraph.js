@@ -81,7 +81,6 @@ d3.csv(csvFile, function(d) {
   })
 
   function updateLines(intent) {
-    console.log("updateLines is called!!!!!!!!!")
 
     svg.selectAll(".line")
     .transition()
