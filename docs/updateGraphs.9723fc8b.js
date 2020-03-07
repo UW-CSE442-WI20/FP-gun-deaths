@@ -647,17 +647,17 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var margin = {
-  top: 40,
-  right: 20,
-  left: 40,
-  bottom: 20
+  top: 50,
+  right: 25,
+  left: 50,
+  bottom: 25
 };
-var size = 400;
+var size = 500;
 var width = size - margin.left - margin.right;
 var height = size - margin.top - margin.bottom;
 var padding = 5;
 var svg = d3.select("body").append("svg");
-svg.attr("width", 400).attr("height", size).attr("border", 0);
+svg.attr("width", size).attr("height", size).attr("border", 0);
 var x = d3.scaleBand();
 var y = d3.scaleLinear();
 svg.append("g").attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
@@ -837,7 +837,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52589" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57237" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

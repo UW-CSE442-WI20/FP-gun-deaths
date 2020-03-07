@@ -647,17 +647,17 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var margin = {
-  top: 40,
-  right: 20,
-  left: 40,
-  bottom: 20
+  top: 50,
+  right: 25,
+  left: 50,
+  bottom: 25
 };
-var size = 400;
+var size = 500;
 var width = size - margin.left - margin.right;
 var height = size - margin.top - margin.bottom;
 var padding = 5;
 var svg = d3.select("body").append("svg");
-svg.attr("width", 400).attr("height", size).attr("border", 0);
+svg.attr("width", size).attr("height", size).attr("border", 0);
 var x = d3.scaleBand();
 var y = d3.scaleLinear();
 svg.append("g").attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
@@ -810,4 +810,4 @@ $intentSelector.onchange = function (e) {
   updateAll();
 };
 },{"./lineGraph.js":"U9Po","./simplePieChart.js":"lD15","./bubbleGraph.js":"Gtdq","./simpleBarGraph.js":"ZSN4"}]},{},["dbB8"], null)
-//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/updateGraphs.eec6fd43.js.map
+//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/updateGraphs.390b5aa2.js.map
