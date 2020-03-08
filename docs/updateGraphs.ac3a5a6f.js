@@ -117,7 +117,155 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"vVhW":[function(require,module,exports) {
+})({"hQIG":[function(require,module,exports) {
+module.exports = "https://uw-cse442-wi20.github.io/FP-gun-deaths/places.a8588b90.csv";
+},{}],"ZSN4":[function(require,module,exports) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var margin = {
+  top: 50,
+  right: 25,
+  left: 50,
+  bottom: 25
+};
+var size = 500;
+var width = size - margin.left - margin.right;
+var height = size - margin.top - margin.bottom;
+var padding = 5;
+var greenScale = d3.scaleLinear().domain([0, 255]).range([30, 160]);
+var svg = d3.select("body").append("svg");
+svg.attr("width", size).attr("height", size).attr("border", 0);
+var x = d3.scaleBand();
+var y = d3.scaleLinear();
+svg.append("g").attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
+var globalData;
+
+var csvFile = require("./places.csv");
+
+d3.csv(csvFile).then(function (d) {
+  generateGraph(d);
+  globalData = d;
+});
+
+function getFilteredData(data, intent) {
+  if (intent == 1) {
+    // double equals allows interpolation
+    // both homicide and suicide
+    return data;
+  } else if (intent == 2) {
+    // homicide
+    return data.filter(function (d) {
+      return d.Intent === "Homicide";
+    });
+  } else {
+    // intent == 3
+    // suicide
+    return data.filter(function (d) {
+      return d.Intent === "Suicide";
+    });
+  }
+}
+
+function generateGraph(d) {
+  var nestedData = d3.nest().key(function (d) {
+    return d.Place;
+  }).rollup(function (d) {
+    return d3.sum(d, function (d) {
+      return d.Deaths;
+    });
+  }).entries(d);
+  nestedData = nestedData.sort(function (d) {
+    return d3.descending(d.value);
+  });
+  x.domain(nestedData.map(function (d, i) {
+    return d.key;
+  })).range([padding, width]);
+  y.domain([0, getMaxValue(nestedData)]).range([height, margin.bottom / 2]);
+  var xAxis = d3.axisBottom().scale(x);
+  var yAxis = d3.axisLeft().scale(y).ticks(10); // title
+
+  svg.append("text").attr("transform", "translate(" + margin.left + ", " + 0 + ")").attr("x", 50).attr("y", 50).attr("font-size", "24px").text("Count of deaths by Location"); // x
+
+  svg.append("g").attr("class", "xAxis").attr("transform", "translate(" + margin.left + ", " + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "translate(" + margin.left + ", " + margin.bottom / 2 + ")").attr("transform", "rotate(-30)"); //y
+
+  svg.append("g").attr("class", "yAxis").attr("transform", "translate(" + margin.left + ", " + "0" + ")").call(yAxis); // bars
+
+  y.range([height - 10, margin.bottom / 2]); // augment for drawing
+
+  svg.selectAll("bar").data(nestedData).enter().append("rect").attr("class", "placeBar").style("fill", function (d) {
+    var colorAugment = Math.round(y(d.value)) / 2;
+    var red = 240 - colorAugment;
+    return "rgb(" + red + ", " + greenScale(colorAugment) + ", 0)";
+  }).attr("x", function (d, i) {
+    return x(d.key) + margin.left;
+  }).attr("y", function (d, i) {
+    return y(d.value);
+  }).transition().duration(1000).attr("width", x.bandwidth() - padding).attr("height", function (d, i) {
+    return height - y(d.value);
+  });
+}
+
+function updateGraph(d) {
+  var nestedData = d3.nest().key(function (d) {
+    return d.Place;
+  }).rollup(function (d) {
+    return d3.sum(d, function (d) {
+      return d.Deaths;
+    });
+  }).entries(d);
+  nestedData = nestedData.sort(function (d) {
+    return d3.descending(d.value);
+  });
+  y.range([height - 10, margin.bottom / 2]); // augment for drawing
+
+  svg.selectAll("rect.placeBar").data(nestedData).transition().duration(1000).style("fill", function (d) {
+    var colorAugment = Math.round(y(d.value)) / 2;
+    var red = 240 - colorAugment;
+    return "rgb(" + red + ", " + greenScale(colorAugment) + ", 0)";
+  }).attr("x", function (d, i) {
+    return x(d.key) + margin.left;
+  }).attr("y", function (d, i) {
+    return y(d.value);
+  }).attr("width", x.bandwidth() - padding).attr("height", function (d, i) {
+    return height - y(d.value);
+  });
+}
+
+function getMaxValue(d) {
+  var maxValue = d[0].value;
+
+  for (var i = 1; i < d.length; i++) {
+    maxValue = Math.max(maxValue, d[i].value);
+  }
+
+  return maxValue;
+}
+
+var placeUpdate =
+/*#__PURE__*/
+function () {
+  function placeUpdate() {
+    _classCallCheck(this, placeUpdate);
+  }
+
+  _createClass(placeUpdate, [{
+    key: "updatePlace",
+    value: function updatePlace() {
+      var $intentSelector = document.getElementById("intent-select");
+      var intentData = getFilteredData(globalData, $intentSelector.value);
+      updateGraph(intentData);
+    }
+  }]);
+
+  return placeUpdate;
+}();
+
+module.exports = placeUpdate;
+},{"./places.csv":"hQIG"}],"vVhW":[function(require,module,exports) {
 module.exports = "https://uw-cse442-wi20.github.io/FP-gun-deaths/lineGraphData.601118c6.csv";
 },{}],"U9Po":[function(require,module,exports) {
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -637,166 +785,19 @@ function () {
 }();
 
 module.exports = bubbleUpdate;
-},{"./bubbleGraphData.csv":"f9Pb"}],"hQIG":[function(require,module,exports) {
-module.exports = "https://uw-cse442-wi20.github.io/FP-gun-deaths/places.a8588b90.csv";
-},{}],"ZSN4":[function(require,module,exports) {
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+},{"./bubbleGraphData.csv":"f9Pb"}],"dbB8":[function(require,module,exports) {
+var placeGraph = require("./simpleBarGraph.js");
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var margin = {
-  top: 50,
-  right: 25,
-  left: 50,
-  bottom: 25
-};
-var size = 500;
-var width = size - margin.left - margin.right;
-var height = size - margin.top - margin.bottom;
-var padding = 5;
-var svg = d3.select("body").append("svg");
-svg.attr("width", size).attr("height", size).attr("border", 0);
-var x = d3.scaleBand();
-var y = d3.scaleLinear();
-svg.append("g").attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
-var globalData;
-
-var csvFile = require("./places.csv");
-
-d3.csv(csvFile).then(function (d) {
-  generateGraph(d);
-  globalData = d;
-});
-
-function getFilteredData(data, intent) {
-  if (intent == 1) {
-    // double equals allows interpolation
-    // both homicide and suicide
-    return data;
-  } else if (intent == 2) {
-    // homicide
-    return data.filter(function (d) {
-      return d.Intent === "Homicide";
-    });
-  } else {
-    // intent == 3
-    // suicide
-    return data.filter(function (d) {
-      return d.Intent === "Suicide";
-    });
-  }
-}
-
-function generateGraph(d) {
-  var nestedData = d3.nest().key(function (d) {
-    return d.Place;
-  }).rollup(function (d) {
-    return d3.sum(d, function (d) {
-      return d.Deaths;
-    });
-  }).entries(d);
-  nestedData = nestedData.sort(function (d) {
-    return d3.descending(d.value);
-  });
-  x.domain(nestedData.map(function (d, i) {
-    return d.key;
-  })).range([padding, width]);
-  y.domain([0, getMaxValue(nestedData)]).range([height, margin.bottom / 2]);
-  var xAxis = d3.axisBottom().scale(x);
-  var yAxis = d3.axisLeft().scale(y).ticks(10); // title
-
-  svg.append("text").attr("transform", "translate(" + margin.left + ", " + 0 + ")").attr("x", 50).attr("y", 50).attr("font-size", "24px").text("Count of deaths by Location"); // x
-
-  svg.append("g").attr("class", "xAxis").attr("transform", "translate(" + margin.left + ", " + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "translate(" + margin.left + ", " + margin.bottom / 2 + ")").attr("transform", "rotate(-30)"); //y
-
-  svg.append("g").attr("class", "yAxis").attr("transform", "translate(" + margin.left + ", " + "0" + ")").call(yAxis); // bars
-
-  y.range([height - 10, margin.bottom / 2]); // augment for drawing
-
-  svg.selectAll("bar").data(nestedData).enter().append("rect").attr("class", "placeBar").style("fill", function (d) {
-    var red = 255 - Math.round(y(d.value)) / 4;
-    var green = 0 + Math.round(y(d.value)) / 1.5;
-    return "rgb(" + red + ", " + green + ", 26)";
-  }).attr("x", function (d, i) {
-    return x(d.key) + margin.left;
-  }).attr("y", function (d, i) {
-    return y(d.value);
-  }).transition().duration(1000).attr("width", x.bandwidth() - padding).attr("height", function (d, i) {
-    return height - y(d.value);
-  });
-}
-
-function updateGraph(d) {
-  var nestedData = d3.nest().key(function (d) {
-    return d.Place;
-  }).rollup(function (d) {
-    return d3.sum(d, function (d) {
-      return d.Deaths;
-    });
-  }).entries(d);
-  nestedData = nestedData.sort(function (d) {
-    return d3.descending(d.value);
-  });
-  y.range([height - 10, margin.bottom / 2]); // augment for drawing
-
-  svg.selectAll("rect.placeBar").data(nestedData).transition().duration(1000).style("fill", function (d) {
-    var red = 255 - Math.round(y(d.value)) / 4;
-    var green = 0 + Math.round(y(d.value)) / 1.5;
-    return "rgb(" + red + ", " + green + ", 26)";
-  }).attr("x", function (d, i) {
-    return x(d.key) + margin.left;
-  }).attr("y", function (d, i) {
-    return y(d.value);
-  }).attr("width", x.bandwidth() - padding).attr("height", function (d, i) {
-    return height - y(d.value);
-  });
-}
-
-function getMaxValue(d) {
-  var maxValue = d[0].value;
-
-  for (var i = 1; i < d.length; i++) {
-    maxValue = Math.max(maxValue, d[i].value);
-  }
-
-  return maxValue;
-}
-
-var placeUpdate =
-/*#__PURE__*/
-function () {
-  function placeUpdate() {
-    _classCallCheck(this, placeUpdate);
-  }
-
-  _createClass(placeUpdate, [{
-    key: "updatePlace",
-    value: function updatePlace() {
-      var $intentSelector = document.getElementById("intent-select");
-      var intentData = getFilteredData(globalData, $intentSelector.value);
-      updateGraph(intentData);
-    }
-  }]);
-
-  return placeUpdate;
-}();
-
-module.exports = placeUpdate;
-},{"./places.csv":"hQIG"}],"dbB8":[function(require,module,exports) {
 var lineGraph = require("./lineGraph.js");
 
 var piChart = require("./simplePieChart.js");
 
 var bubbleGraph = require("./bubbleGraph.js");
 
-var placeGraph = require("./simpleBarGraph.js");
-
+var placeGraphInstance = new placeGraph();
 var lineGraphInstance = new lineGraph();
 var piChartInstance = new piChart();
 var bubbleGraphInstance = new bubbleGraph();
-var placeGraphInstance = new placeGraph();
 var $intentSelector = document.getElementById("intent-select");
 
 function updateAll() {
@@ -809,5 +810,5 @@ function updateAll() {
 $intentSelector.onchange = function (e) {
   updateAll();
 };
-},{"./lineGraph.js":"U9Po","./simplePieChart.js":"lD15","./bubbleGraph.js":"Gtdq","./simpleBarGraph.js":"ZSN4"}]},{},["dbB8"], null)
-//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/updateGraphs.390b5aa2.js.map
+},{"./simpleBarGraph.js":"ZSN4","./lineGraph.js":"U9Po","./simplePieChart.js":"lD15","./bubbleGraph.js":"Gtdq"}]},{},["dbB8"], null)
+//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/updateGraphs.ac3a5a6f.js.map

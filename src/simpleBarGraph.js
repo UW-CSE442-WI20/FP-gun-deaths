@@ -3,6 +3,7 @@ var size = 500;
 var width = size - margin.left - margin.right;
 var height = size - margin.top - margin.bottom;
 var padding = 5;
+var greenScale = d3.scaleLinear().domain([0, 255]).range([30, 160]);
 var svg = d3.select("body").append("svg");
 svg.attr("width", size).attr("height", size).attr("border", 0);
 
@@ -90,9 +91,9 @@ function generateGraph(d) {
         .enter().append("rect")
         .attr("class", "placeBar")
         .style("fill", function(d) {
-            var red = 255 - Math.round(y(d.value)) / 4;
-            var green = 0 + Math.round(y(d.value)) / 1.5;
-            return "rgb(" + red + ", " + green + ", 26)"; 
+            var colorAugment = Math.round(y(d.value)) / 2;
+            var red = 240 - colorAugment;
+            return "rgb(" + red + ", " + greenScale(colorAugment) + ", 0)"; 
         })
         .attr("x", function(d, i) {return x(d.key) + margin.left; })
         .attr("y", function(d, i) { return y(d.value); })
@@ -120,9 +121,9 @@ function updateGraph(d) {
         .transition()
         .duration(1000)
         .style("fill", function(d) {
-            var red = 255 - Math.round(y(d.value)) / 4;
-            var green = 0 + Math.round(y(d.value)) / 1.5;
-            return "rgb(" + red + ", " + green + ", 26)"; 
+            var colorAugment = Math.round(y(d.value)) / 2;
+            var red = 240 - colorAugment;
+            return "rgb(" + red + ", " + greenScale(colorAugment) + ", 0)"; 
         })
         .attr("x", function(d, i) {return x(d.key) + margin.left; })
         .attr("y", function(d, i) { return y(d.value); })
