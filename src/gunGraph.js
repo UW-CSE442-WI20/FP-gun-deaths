@@ -3,48 +3,62 @@ var size = 500;
 var width = size - margin.left - margin.right;
 var height = size - margin.top - margin.bottom;
 var padding = 5;
-var greenScale = d3.scaleLinear().domain([0, 255]).range([30, 160]);
+var colors = ["#52BE80", "#E67E22", "#5DADE2", "#E74C3C"];
 var svg = d3.select("body").append("svg");
 svg.attr("width", size).attr("height", size).attr("border", 0);
 
 var x = d3.scaleBand();
 var y = d3.scaleLinear();
 
-svg.append("g")
-    .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
 
-var globalData;
-const csvFile = require("./places.csv");
-d3.csv(csvFile).then(function(d) {
-    generateGraph(d);
-    globalData = d;
-})
-
-function getFilteredData(data, intent) {
-    if (intent == 1) { // double equals allows interpolation
-        // both homicide and suicide
+function getFilteredData(data, year) {
+    if (year == 1) {
         return data;
-    } else if (intent == 2) {
-        // homicide
-        return data.filter(function(d) { return d.Intent === "Homicide"});
-    } else {  // intent == 3
-        // suicide
-        return data.filter(function(d) { return d.Intent === "Suicide"});
+    } else if (year == 2) {
+        return data.filter(function(d) { return d.year === 2012;});
+    } else if (year == 3) {
+        return data.filter(function(d) { return d.year === 2013;});
+    } else if (year == 4) {
+        return data.filter(function(d) { return d.year === 2014;});
+    } else if (year == 5) {
+        return data.filter(function(d) { return d.year === 2015;});
+    } else { // year == 6
+        return data.filter(function(d) { return d.year === 2016;});
     }
-    
 }
 
+var globalData;
+const csvFile = require("./fbi_clean.csv");
+d3.csv(csvFile, function(d) {
+    d.year = +d.year;
+    d.deaths = +d.deaths;
+    return d;
+}).then(function(d) {
+    var $yearSelector = document.getElementById("year-select");
+    var yearData = getFilteredData(d, $yearSelector.value);
+    generateGraph(yearData);
+    globalData = d;
+    console.log(d);
+
+    $yearSelector.onchange = function(e) {
+        year = e.target.value;
+        var yearData = getFilteredData(d, year);
+        console.log(yearData);
+
+        updateGraph(yearData);
+    }
+})
 
 function generateGraph(d) {
     var nestedData = d3.nest()
-        .key(function(d) { return d.Place;})
+        .key(function(d) { return d.gunType;})
         .rollup(function(d) {
             return d3.sum(d, function(d) {
-              return d.Deaths;  
+              return d.deaths;  
             })
           })
         .entries(d);
-
+    
     nestedData = nestedData.sort(function(d) {return d3.descending(d.value)});
 
     x.domain(nestedData.map(function(d, i) { return d.key;})).range([padding, width]);
@@ -56,14 +70,14 @@ function generateGraph(d) {
     var yAxis = d3.axisLeft()
         .scale(y)
         .ticks(10);
-        
+
     // // title
     // svg.append("text")
-    //       .attr("transform", "translate(" + margin.left + ", " + 0 + ")")
+    //       .attr("transform", "translate(" + margin.left + ", " + -30 + ")")
     //       .attr("x", 50)
     //       .attr("y", 50)
     //       .attr("font-size", "24px")
-    //       .text("Count of deaths by Location");
+    //       .text("Count of deaths per year by firearm type");
 
     // x
     svg.append("g")
@@ -76,58 +90,54 @@ function generateGraph(d) {
         .attr("dy", "-.55em")
         .attr("transform", "translate(" + margin.left +  ", " + margin.bottom/2 + ")")
         .attr("transform", "rotate(-30)");
-
+    
     //y
     svg.append("g")
         .attr("class", "yAxis")
         .attr("transform", "translate(" + margin.left + ", " + "0" + ")")
         .call(yAxis);
 
-
     // bars
     y.range([height - 10, margin.bottom / 2]); // augment for drawing
     svg.selectAll("bar")
         .data(nestedData)
         .enter().append("rect")
-        .attr("class", "placeBar")
-        .style("fill", function(d) {
-            var colorAugment = Math.round(y(d.value)) / 2;
-            var red = 240 - colorAugment;
-            return "rgb(" + red + ", " + greenScale(colorAugment) + ", 0)"; 
+        .attr("class", "gunBar")
+        .style("fill", function(d, i) {
+            return colors[i];
         })
-        .attr("x", function(d, i) {return x(d.key) + margin.left; })
+        .attr("x", function(d, i) {return x(d.key) + margin.left + 5*padding; })
         .attr("y", function(d, i) { return y(d.value); })
         .transition()
         .duration(1000)
-        .attr("width", x.bandwidth() - padding)
+        .attr("width", x.bandwidth() - 10*padding)
         .attr("height", function(d, i) { return height - y(d.value); });
 }
 
 function updateGraph(d) {
     var nestedData = d3.nest()
-        .key(function(d) { return d.Place;})
+        .key(function(d) { return d.gunType;})
         .rollup(function(d) {
             return d3.sum(d, function(d) {
-              return d.Deaths;  
+              return d.deaths;  
             })
           })
         .entries(d);
 
     nestedData = nestedData.sort(function(d) {return d3.descending(d.value)});
+    console.log(nestedData);
 
     y.range([height - 10, margin.bottom / 2]); // augment for drawing
-    svg.selectAll("rect.placeBar")
+    svg.selectAll("rect.gunBar")
         .data(nestedData)
         .transition()
         .duration(1000)
-        .style("fill", function(d) {
-            var colorAugment = Math.round(y(d.value)) / 2;
-            var red = 240 - colorAugment;
-            return "rgb(" + red + ", " + greenScale(colorAugment) + ", 0)"; 
+        .style("fill", function(d, i) {
+            return colors[i];
         })
-        .attr("x", function(d, i) {return x(d.key) + margin.left; })
+        .attr("x", function(d, i) { console.log(d); return x(d.key) + margin.left + 5*padding; })
         .attr("y", function(d, i) { return y(d.value); })
-        .attr("width", x.bandwidth() - padding)
+        .attr("width", x.bandwidth() - 10*padding)
         .attr("height", function(d, i) { return height - y(d.value); });
 }
 
@@ -139,14 +149,14 @@ function getMaxValue(d) {
     return maxValue;
 }
 
-class placeUpdate {
+class gunUpdate {
     constructor() {}
-  
-    updatePlace() {
-      var $intentSelector = document.getElementById("intent-select");
-      var intentData = getFilteredData(globalData, $intentSelector.value);
-      updateGraph(intentData);
+
+    updateGun() {
+        var $yearSelector = document.getElementById("year-select");
+        var yearData = getFilteredData(globalData, $yearSelector.value);
+        updateGraph(yearData);
     }
-  }
-  
-  module.exports = placeUpdate;
+}
+
+module.exports = gunUpdate;

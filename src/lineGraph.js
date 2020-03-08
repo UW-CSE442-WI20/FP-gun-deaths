@@ -8,7 +8,7 @@ var x = d3.scaleLinear().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
 
 var races = ["Asian/Pacific Islander", "Black", "Hispanic", "Native American", "White"];
-var colors = ["#52BE80", "#5DADE2", "#E74C3C", "#2471A3", "#E67E22"];
+var colors = ["#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"];
 
 // define the line
 function valueline(intent) {

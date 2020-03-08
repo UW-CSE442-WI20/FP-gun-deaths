@@ -1,8 +1,10 @@
+const gunGraph = require("./gunGraph.js");
 const placeGraph = require("./simpleBarGraph.js");
 const lineGraph = require("./lineGraph.js");
 const piChart = require("./simplePieChart.js");
 const bubbleGraph = require("./bubbleGraph.js");
 
+const gunGraphInstance = new gunGraph();
 const placeGraphInstance = new placeGraph();
 const lineGraphInstance = new lineGraph();
 const piChartInstance = new piChart();
