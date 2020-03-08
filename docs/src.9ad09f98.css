@@ -27,12 +27,12 @@ body{
     padding-right: 30px;
   }
 
-  #year{
+  /* #year{
     display: flex;
     flex-direction: row;
     align-items: center;
     padding-right: 30px;
-  }
+  } */
 
   #value-age{
     padding-left: 20px;

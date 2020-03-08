@@ -55,7 +55,7 @@ function generateGraph(d) {
 
     var yAxis = d3.axisLeft()
         .scale(y)
-        .ticks(10);
+        .ticks(5);
         
     // // title
     // svg.append("text")
@@ -85,7 +85,7 @@ function generateGraph(d) {
 
 
     // bars
-    y.range([height - 10, margin.bottom / 2]); // augment for drawing
+    y.range([height - 5, margin.bottom / 2]); // augment for drawing
     svg.selectAll("bar")
         .data(nestedData)
         .enter().append("rect")
@@ -97,10 +97,13 @@ function generateGraph(d) {
         })
         .attr("x", function(d, i) {return x(d.key) + margin.left; })
         .attr("y", function(d, i) { return y(d.value); })
+        .on('mouseover', mouseHoverIn)
+        .on("mouseout", mouseHoverOut)
         .transition()
         .duration(1000)
         .attr("width", x.bandwidth() - padding)
         .attr("height", function(d, i) { return height - y(d.value); });
+        
 }
 
 function updateGraph(d) {
@@ -129,6 +132,23 @@ function updateGraph(d) {
         .attr("y", function(d, i) { return y(d.value); })
         .attr("width", x.bandwidth() - padding)
         .attr("height", function(d, i) { return height - y(d.value); });
+}
+
+function mouseHoverIn(d, i) {
+    svg.append("text")
+        .attr("id", "t" + d.value + "-")
+        .attr("x", function() {
+            return x(d.key) + 50;
+        })
+        .attr("y", function() {
+            return y(d.value);
+        })
+    .text(function() { return d.value; })
+        .attr("fill", "black");
+}
+
+function mouseHoverOut(d, i) {
+    d3.select("#t" + d.value + "-").remove();
 }
 
 function getMaxValue(d) {

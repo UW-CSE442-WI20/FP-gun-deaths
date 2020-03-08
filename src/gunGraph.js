@@ -59,7 +59,9 @@ function generateGraph(d) {
           })
         .entries(d);
     
+    console.log(nestedData);
     nestedData = nestedData.sort(function(d) {return d3.descending(d.value)});
+    console.log(nestedData);
 
     x.domain(nestedData.map(function(d, i) { return d.key;})).range([padding, width]);
     y.domain([0, getMaxValue(nestedData)]).range([height, margin.bottom / 2]);
