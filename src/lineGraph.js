@@ -1,5 +1,5 @@
 // set the dimensions and margins of the graph
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
+var margin = {top: 20, right: 20, bottom: 70, left: 50},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -70,9 +70,26 @@ d3.csv(csvFile, function(d) {
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x));
 
+    // X Axis label
+    svg.append("text")
+        .attr("transform",
+              "translate(" + (width/2) + " ," +
+                             (height + margin.top + 20) + ")")
+        .style("text-anchor", "middle")
+        .text("Age");
+
     // Add the Y Axis
     svg.append("g")
         .call(d3.axisLeft(y));
+
+    // Y Axis label
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left - 5)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Deaths");
 
     addLegend();
 

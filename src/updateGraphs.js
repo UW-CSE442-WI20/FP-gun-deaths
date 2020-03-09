@@ -1,14 +1,14 @@
 // const gunGraph = require("./gunGraph.js");
+const bubbleGraph = require("./bubbleGraph.js");
 const placeGraph = require("./simpleBarGraph.js");
 const lineGraph = require("./lineGraph.js");
 const piChart = require("./simplePieChart.js");
-const bubbleGraph = require("./bubbleGraph.js");
 
 // const gunGraphInstance = new gunGraph();
+const bubbleGraphInstance = new bubbleGraph();
 const placeGraphInstance = new placeGraph();
 const lineGraphInstance = new lineGraph();
 const piChartInstance = new piChart();
-const bubbleGraphInstance = new bubbleGraph();
 
 
 var $intentSelector = document.getElementById("intent-select");

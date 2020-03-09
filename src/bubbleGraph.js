@@ -9,6 +9,7 @@ var colors = ["#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"];
 var scale = d3.scaleSqrt();
 var svg = d3.select("body").append("svg");
 svg.attr("width", diameter).attr("height", diameter).attr("border", 0);
+var f = d3.format(".2f");
 
 var pack = d3.pack()
     .size([diameter-50, diameter])
@@ -35,7 +36,8 @@ function getFilteredData(data, intent, ageGroup) {
 
 // read in CSV data
 var globalData;
-var globalAge = 0;
+var globalAge = 1;
+var globalIntent = 1;
 const csvFile = require("./bubbleGraphData.csv");
 d3.csv(csvFile, function(d) {
         d.Deaths = +d.Deaths;
@@ -44,48 +46,25 @@ d3.csv(csvFile, function(d) {
         return d;
 }).then(function(d) {
     var $intentSelector = document.getElementById("intent-select");
-    var ageGroup = 0;
-    var intentData = getFilteredData(d, $intentSelector.value, ageGroup);
+    var $ageSelector = document.getElementById("age-select");
+    var data = getFilteredData(d, $intentSelector.value, $ageSelector.value);
     globalData = d;
 
-    enterCircles(intentData);
+    enterCircles(data);
 
-    var sliderAge = d3
-        .sliderBottom()
-        .min(0)  // bind based on 0-4 on the call, filter
-        .max(4)
-        .width(300)
-        .ticks(4)
-        .step(1)
-        .default(0)
-        .on('onchange', val => {
-            d3.select('p#value-age').text((ages[val]));
-            ageGroup = val;
-            globalAge = ageGroup;
-            var ageData = getFilteredData(d, $intentSelector.value, ageGroup);
-            updateCircles(ageData);
-        });
+    svg.append("text")
+        .attr("transform",
+              "translate(" + (diameter/2) + " ," +
+                             (0 + 20) + ")")
+        .style("text-anchor", "middle")
+        .text("Deaths per 100,000");
 
-    var gAge = d3
-        .select('div#slider-age')
-        .append('svg')
-        .attr('width', 500)
-        .attr('height', 100)
-        .append('g')
-        .attr('transform', 'translate(30,30)');
+    $ageSelector.onchange = function(e) {
+      globalAge = e.target.value;
+      var ageData = getFilteredData(d, globalIntent, globalAge);
 
-    gAge.call(sliderAge);
-
-    d3.select('p#value-age').text((ages[sliderAge.value()]));
-
-    // $intentSelector.onchange = function(e) {
-    //   intent = e.target.value;
-    //   var intentData = getFilteredData(d, intent, ageGroup);
-
-
-    //   updateCircles(intentData);
-
-    // };
+      updateCircles(ageData);
+    };
 })
 
 // hard cap @ 6 circles, so hard math was performed on rendering
@@ -120,7 +99,7 @@ function enterCircles(data) {
 
   node.append("title")
     .text(function(d, i) {
-      return d.data.key + ": " + d.value;
+      return d.data.key + ": " + f(d.value);
     });
 
   node.append("circle")
@@ -197,7 +176,7 @@ scale.domain([0, maxValue])
 
     node.select("title")
     .text(function(d, i) {
-      return d.data.key + ": " + d.value;
+      return d.data.key + ": " + f(d.value);
     })
 
     node.select("text")
@@ -246,7 +225,8 @@ class bubbleUpdate {
 
   updateGraph() {
     var $intentSelector = document.getElementById("intent-select");
-    var intentData = getFilteredData(globalData, $intentSelector.value, globalAge);
+    globalIntent = $intentSelector.value
+    var intentData = getFilteredData(globalData, globalIntent, globalAge);
     updateCircles(intentData);
   }
 }

@@ -1,4 +1,4 @@
-var margin = {top: 50, right: 25, left: 50, bottom: 25};
+var margin = {top: 50, right: 25, left: 75, bottom: 25};
 var size = 500;
 var width = size - margin.left - margin.right;
 var height = size - margin.top - margin.bottom;
@@ -31,7 +31,7 @@ function getFilteredData(data, intent) {
         // suicide
         return data.filter(function(d) { return d.Intent === "Suicide"});
     }
-    
+
 }
 
 
@@ -40,7 +40,7 @@ function generateGraph(d) {
         .key(function(d) { return d.Place;})
         .rollup(function(d) {
             return d3.sum(d, function(d) {
-              return d.Deaths;  
+              return d.Deaths;
             })
           })
         .entries(d);
@@ -56,7 +56,7 @@ function generateGraph(d) {
     var yAxis = d3.axisLeft()
         .scale(y)
         .ticks(5);
-        
+
     // // title
     // svg.append("text")
     //       .attr("transform", "translate(" + margin.left + ", " + 0 + ")")
@@ -83,9 +83,18 @@ function generateGraph(d) {
         .attr("transform", "translate(" + margin.left + ", " + "0" + ")")
         .call(yAxis);
 
+    // Y Axis label
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Deaths");
+
 
     // bars
-    y.range([height - 5, margin.bottom / 2]); // augment for drawing
+    y.range([height - 10, margin.bottom / 2]); // augment for drawing
     svg.selectAll("bar")
         .data(nestedData)
         .enter().append("rect")
@@ -93,7 +102,7 @@ function generateGraph(d) {
         .style("fill", function(d) {
             var colorAugment = Math.round(y(d.value)) / 2;
             var red = 240 - colorAugment;
-            return "rgb(" + red + ", " + greenScale(colorAugment) + ", 0)"; 
+            return "rgb(" + red + ", " + greenScale(colorAugment) + ", 0)";
         })
         .attr("x", function(d, i) {return x(d.key) + margin.left; })
         .attr("y", function(d, i) { return y(d.value); })
@@ -103,7 +112,7 @@ function generateGraph(d) {
         .duration(1000)
         .attr("width", x.bandwidth() - padding)
         .attr("height", function(d, i) { return height - y(d.value); });
-        
+
 }
 
 function updateGraph(d) {
@@ -111,7 +120,7 @@ function updateGraph(d) {
         .key(function(d) { return d.Place;})
         .rollup(function(d) {
             return d3.sum(d, function(d) {
-              return d.Deaths;  
+              return d.Deaths;
             })
           })
         .entries(d);
@@ -126,7 +135,7 @@ function updateGraph(d) {
         .style("fill", function(d) {
             var colorAugment = Math.round(y(d.value)) / 2;
             var red = 240 - colorAugment;
-            return "rgb(" + red + ", " + greenScale(colorAugment) + ", 0)"; 
+            return "rgb(" + red + ", " + greenScale(colorAugment) + ", 0)";
         })
         .attr("x", function(d, i) {return x(d.key) + margin.left; })
         .attr("y", function(d, i) { return y(d.value); })
@@ -138,10 +147,10 @@ function mouseHoverIn(d, i) {
     svg.append("text")
         .attr("id", "t" + d.value + "-")
         .attr("x", function() {
-            return x(d.key) + 50;
+            return x(d.key) + 75;
         })
         .attr("y", function() {
-            return y(d.value);
+            return y(d.value) - 1.5;
         })
     .text(function() { return d.value; })
         .attr("fill", "black");
@@ -161,12 +170,12 @@ function getMaxValue(d) {
 
 class placeUpdate {
     constructor() {}
-  
+
     updatePlace() {
       var $intentSelector = document.getElementById("intent-select");
       var intentData = getFilteredData(globalData, $intentSelector.value);
       updateGraph(intentData);
     }
   }
-  
+
   module.exports = placeUpdate;
