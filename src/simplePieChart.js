@@ -47,7 +47,7 @@ function pieChartUpdate() {
       .attr("dy", ".50em")
       .style("text-anchor", "middle")
       .text(function(d, i) {
-        return percentage[i].toFixed(2) + '%';
+        return (percentage[i] * 100).toFixed(2) + '%';
       });
 
 
