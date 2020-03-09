@@ -2,8 +2,7 @@ body {
    background-color: #E5E8E8;
    display: flex;
    justify-content: center;
-   flex-wrap: wrap;
-   flex-direction: row;
+   flex-direction: column;
 }
 
 #title {
@@ -21,6 +20,15 @@ body {
    align-items: center;
 }
 
+#main {
+   background-color: #E5E8E8;
+   display: flex;
+   justify-content: center;
+   flex-wrap: wrap;
+   width: 72%;
+   margin: auto;
+}
+
 .bubble-graph, .bar-graph, .line-graph, .pie-chart {
    display: flex;
    justify-content: center;
@@ -30,6 +38,8 @@ body {
 
 p {
    max-width: 300px;
+   font-family: sans-serif;
+   font-size: 18px;
 }
 
 #prologue {
