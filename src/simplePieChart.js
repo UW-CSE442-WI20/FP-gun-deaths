@@ -10,10 +10,10 @@ var height = 200;
 var radius = Math.min(width, height) / 2;
 
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select(".pie-chart").append("svg")
 			.attr("width", width + padding)
             .attr("height", height + padding);
-            
+
 g = svg.append("g").attr("transform", "translate(" + (width+padding) / 2 + "," + (height+padding) / 2 + ")");
 
 // Generate the arcs
@@ -32,7 +32,7 @@ function pieChartUpdate() {
         .transition()
         .duration(2000)
         .attr("d", arc);
-    
+
     // svg.selectAll("arc").selectAll("percentage").remove();
     svg.selectAll("text.percentage")
         .data(pie(current))
@@ -50,7 +50,7 @@ function pieChartUpdate() {
         return percentage[i].toFixed(2) + '%';
       });
 
-    
+
 }
 
 function pieChartCreate() {
@@ -154,9 +154,9 @@ d3.csv(csvMvF, function(d) {
     //     intent = e.target.value;
     //     getFilteredData(d, intent);
     //     console.log(current);
-  
+
     //     pieChartUpdate();
-  
+
     // };
 })
 

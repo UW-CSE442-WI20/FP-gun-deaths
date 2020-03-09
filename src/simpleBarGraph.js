@@ -4,7 +4,7 @@ var width = size - margin.left - margin.right;
 var height = size - margin.top - margin.bottom;
 var padding = 5;
 var greenScale = d3.scaleLinear().domain([0, 255]).range([30, 160]);
-var svg = d3.select("body").append("svg");
+var svg = d3.select(".bar-graph").append("svg");
 svg.attr("width", size).attr("height", size).attr("border", 0);
 
 var x = d3.scaleBand();

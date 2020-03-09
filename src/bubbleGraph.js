@@ -7,7 +7,7 @@ pad = 5;
 var ages = ["All", "Under 15", "15 - 34", "35 - 64", "65+"];
 var colors = ["#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"];
 var scale = d3.scaleSqrt();
-var svg = d3.select("body").append("svg");
+var svg = d3.select(".bubble-graph").append("svg");
 svg.attr("width", diameter).attr("height", diameter).attr("border", 0);
 var f = d3.format(".2f");
 
