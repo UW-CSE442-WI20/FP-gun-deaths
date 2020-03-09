@@ -187,7 +187,7 @@ function pieChartCreate() {
 
     return "translate(" + _d + ")";
   }).attr("dy", ".50em").style("text-anchor", "middle").text(function (d, i) {
-    return percentage[i].toFixed(2) + '%';
+    return (percentage[i] * 100).toFixed(2) + '%';
   });
 } // grabs the data about Male v Female, filtered on intent
 
@@ -450,7 +450,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 // define functions for handling homicide & side-annotation
 // suicide & side-annotation
-diameter = 650;
+diameter = 550;
 pad = 5;
 var ages = ["All", "Under 15", "15 - 34", "35 - 64", "65+"];
 var colors = ["#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"];
@@ -532,7 +532,7 @@ function enterCircles(data) {
     return d.value;
   });
   var maxValue = getMaxValue(nestedData);
-  scale.domain([0, maxValue]).range([20, diameter / nestedData.length - 2 * pad]);
+  scale.domain([0, maxValue]).range([20, diameter / nestedData.length - 4 * pad]);
   var node = svg.selectAll(".node").data(pack(root).leaves()).enter().append("g").attr("class", "node").attr("transform", function (d, i) {
     return "translate(" + d.x + ", " + d.y + ")";
   });
@@ -571,7 +571,7 @@ function updateCircles(data) {
     return d.value;
   });
   var maxValue = getMaxValue(nestedData);
-  scale.domain([0, maxValue]).range([20, diameter / nestedData.length - 2 * pad]);
+  scale.domain([0, maxValue]).range([20, diameter / nestedData.length - 4 * pad]);
   var node = svg.selectAll(".node").data(pack(root).leaves()).transition().duration(2000).attr("transform", function (d, i) {
     return "translate(" + d.x + ", " + d.y + ")";
   }).call(function (node) {
@@ -642,7 +642,7 @@ var margin = {
   bottom: 70,
   left: 50
 },
-    width = 960 - margin.left - margin.right,
+    width = 650 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom; // set the ranges
 
 var x = d3.scaleLinear().range([0, width]);
@@ -833,4 +833,4 @@ $intentSelector.onchange = function (e) {
   updateAll();
 };
 },{"./simplePieChart.js":"lD15","./simpleBarGraph.js":"ZSN4","./bubbleGraph.js":"Gtdq","./lineGraph.js":"U9Po"}]},{},["dbB8"], null)
-//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/updateGraphs.6b5ca146.js.map
+//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/updateGraphs.3f098cae.js.map

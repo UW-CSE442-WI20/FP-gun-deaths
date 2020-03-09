@@ -2,7 +2,7 @@
 
 // suicide & side-annotation
 
-diameter = 650;
+diameter = 550;
 pad = 5;
 var ages = ["All", "Under 15", "15 - 34", "35 - 64", "65+"];
 var colors = ["#52BE80", "#E67E22", "#5DADE2", "#E74C3C", "#2471A3"];
@@ -86,7 +86,7 @@ function enterCircles(data) {
   var maxValue = getMaxValue(nestedData);
 
   scale.domain([0, maxValue])
-    .range([20, (diameter / nestedData.length) - 2*pad]);
+    .range([20, (diameter / nestedData.length) - 4*pad]);
 
   var node = svg.selectAll(".node")
   .data(pack(root).leaves())
@@ -159,7 +159,7 @@ var root = d3.hierarchy({children: nestedData})
 var maxValue = getMaxValue(nestedData);
 
 scale.domain([0, maxValue])
-  .range([20, (diameter / nestedData.length) - 2*pad]);
+  .range([20, (diameter / nestedData.length) - 4*pad]);
 
   var node = svg.selectAll(".node")
   .data(pack(root).leaves())
