@@ -7,7 +7,7 @@ School/insituition,Suicide,295
 Farm,Suicide,378
 Industrial/construction,Suicide,155
 Residential instituition,Suicide,125
-Sports,Suicide,98
+Sporting event,Suicide,98
 Home,Homicide,13613
 Other,Homicide,10416
 Street,Homicide,8867
@@ -16,4 +16,4 @@ School/insituition,Homicide,361
 Farm,Homicide,76
 Industrial/construction,Homicide,85
 Residential instituition,Homicide,73
-Sports,Homicide,22
+Sporting event,Homicide,22

@@ -1,53 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="index.css">
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <title>FP Gun Deaths</title>
-  </head>
-  <body>
-    <h1>The Effects of Guns in America</h1>
-    <body>
-      <h2>Breakdown of Gun Deaths in the U.S. by Race and Age from 2012 to 2014</h2>
-      <div id="specs">
-        <div id="intent">
-          <h3>Intent:</h3>
-            <select id="intent-select">
-              <option value=1 selected>All Deaths</option>
-              <option value=2>Homicide</option>
-              <option value=3>Suicide</option>
-            </select>
-        </div>
-        <div id="age">
-          <h3>Age:</h3>
-          <select id="age-select">
+   <head>
+      <meta charset="UTF-8">
+      <link rel="stylesheet" type="text/css" href="index.css">
+      <script src="https://d3js.org/d3.v5.min.js"></script>
+      <title>FP Gun Deaths</title>
+   </head>
+   <body>
+      <div id="title">
+         <h1>The Effects of Guns in America</h1>
+         <div id="sub-title">
+            <h2>Breakdown of </h2>
+            <div id="intent">
+               <select id="intent-select">
+                  <option value=1 selected>All Deaths</option>
+                  <option value=2>Homicides</option>
+                  <option value=3>Suicides</option>
+               </select>
+            </div>
+            <h2> related to Guns in the U.S. from 2012 to 2014</h2>
+         </div>
+      </div>
+      <div id="age">
+         <h3>Age:</h3>
+         <select id="age-select">
             <option value=0 selected>All</option>
             <option value=1>Under 15</option>
             <option value=2>15 - 34</option>
             <option value=3>35 - 64</option>
             <option value=4>65+</option>
-          </select>
-          <!-- <div class="row align-items-center"> -->
-          <!-- </div> -->
-        </div>
-        <!-- <div id="year">
-          <h3>Year:</h3>
-          <select id="year-select">
-            <option value=1 selected>All Years</option>
-            <option value=2>2012</option>
-            <option value=3>2013</option>
-            <option value=4>2014</option>
-            <option value=5>2015</option>
-            <option value=6>2016</option>
-          </select>
-        </div> -->
+        </select>
       </div>
-      <script src="https://unpkg.com/d3-simple-slider"></script>
       <script src="./updateGraphs.js"></script>
-    <!-- <script src="./bubbleGraph.js"></script> -->
-    <!-- <script src="./simpleBarGraph.js"></script> -->
-    <!-- <script src="./lineGraph.js"></script> -->
-    <!-- <script src="./simplePieChart.js"></script> -->
-  </body>
+   </body>
 </html>
