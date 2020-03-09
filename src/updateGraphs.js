@@ -1,23 +1,23 @@
 // const gunGraph = require("./gunGraph.js");
-const bubbleGraph = require("./bubbleGraph.js");
-const placeGraph = require("./simpleBarGraph.js");
-const lineGraph = require("./lineGraph.js");
 const piChart = require("./simplePieChart.js");
+const placeGraph = require("./simpleBarGraph.js");
+const bubbleGraph = require("./bubbleGraph.js");
+const lineGraph = require("./lineGraph.js");
 
 // const gunGraphInstance = new gunGraph();
-const bubbleGraphInstance = new bubbleGraph();
-const placeGraphInstance = new placeGraph();
-const lineGraphInstance = new lineGraph();
 const piChartInstance = new piChart();
+const placeGraphInstance = new placeGraph();
+const bubbleGraphInstance = new bubbleGraph();
+const lineGraphInstance = new lineGraph();
 
 
 var $intentSelector = document.getElementById("intent-select");
 
 function updateAll() {
-    placeGraphInstance.updatePlace();
-    lineGraphInstance.updateGraph();
     piChartInstance.updatePiChart();
+    placeGraphInstance.updatePlace();
     bubbleGraphInstance.updateGraph();
+    lineGraphInstance.updateGraph();
 
 }
 
