@@ -1,4 +1,4 @@
-var genders = ["Male", "Female"]
+var genders = ["Male Victims", "Female Victims"]
 var intents = ["Homicide", "Suicide"]
 var padding = 50;
 
