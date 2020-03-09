@@ -25,7 +25,7 @@ body {
    display: flex;
    justify-content: center;
    flex-wrap: wrap;
-   width: 72%;
+   width: 85%;
    margin: auto;
 }
 
@@ -50,7 +50,7 @@ h3 {
    max-width: 600px;
 }
 .bubble-graph p, .line-graph p {
-   max-width: 450px;
+   max-width: 400px;
 
 }
 
