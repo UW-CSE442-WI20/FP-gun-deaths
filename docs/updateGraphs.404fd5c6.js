@@ -126,7 +126,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var genders = ["Male", "Female"];
+var genders = ["Male Victims", "Female Victims"];
 var intents = ["Homicide", "Suicide"];
 var padding = 50;
 var deaths = [54486, 8689, 29803, 5373]; // MS, FS, MH, FH
@@ -833,4 +833,4 @@ $intentSelector.onchange = function (e) {
   updateAll();
 };
 },{"./simplePieChart.js":"lD15","./simpleBarGraph.js":"ZSN4","./bubbleGraph.js":"Gtdq","./lineGraph.js":"U9Po"}]},{},["dbB8"], null)
-//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/updateGraphs.e6b031dd.js.map
+//# sourceMappingURL=https://uw-cse442-wi20.github.io/FP-gun-deaths/updateGraphs.404fd5c6.js.map
